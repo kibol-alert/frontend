@@ -23,7 +23,8 @@ jobs:
     - name: npm install and deploy
       run: |
         echo  ${{ secrets.token }}
-        git config user.name "bboysokol"
+        git config --global user.name "bboysokol"
+        git config --global user.password ${{ secrets.token }}
         npm ci
         npm run deploy --if-present
       env:
