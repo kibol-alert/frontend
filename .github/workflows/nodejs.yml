@@ -20,13 +20,12 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
     - name: npm install and deploy
       run: |
-        echo  ${{ secrets.token }}
-        git config --global user.name "bboysokol"
-        git config --global user.password ${{ secrets.token }}
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
         npm ci
-        npm run deploy --if-present
+        npm run deploy --if-present   
       env:
-        ACCESS_TOKEN: ${{ secrets.token }}
         CI: true
