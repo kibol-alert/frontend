@@ -1,7 +1,7 @@
 {
   "name": "kibol_alert_frontend",
   "homepage": "https://kibol-alert.github.io/frontend/",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.6.1",
