@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import '../styles/Registration.css';
 
-
 class Registration extends Component {
 
   state = {
