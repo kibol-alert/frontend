@@ -20,7 +20,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.token }}
     - name: npm install and deploy
       run: |
         git config --local user.email "bboy_sokol@o2.pl"
