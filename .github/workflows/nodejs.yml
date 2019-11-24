@@ -1,4 +1,4 @@
-name: Node.js Package
+name: Node CI
 
 on: 
   pull_request:
@@ -7,39 +7,23 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-      - run: npm ci
 
-  publish-npm:
-    needs: build
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-          registry-url: https://registry.npmjs.org/
-      - run: npm ci
-      - run: npm run deploy --if-present
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
-  publish-gpr:
-    needs: build
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x]
+
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-          registry-url: https://npm.pkg.github.com/
-          scope: '@bboysokol'
-      - run: npm ci
-      - run: npm run deploy --if-present
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        node-version: ${{ matrix.node-version }}
+    - name: npm install and deploy
+      run: |
+        npm ci
+        npm run deploy --if-present
+      env:
+        CI: true
