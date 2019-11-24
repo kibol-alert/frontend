@@ -8,10 +8,12 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Build and Deploy
-      uses: kibol-alert/frontend@dev
-      env:
-        ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: dev
-        FOLDER: build
-        BUILD_SCRIPT: npm install && npm run deploy
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Build and Deploy
+        uses: kibol-alert/frontend@dev
+        env:
+          ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: dev
+          FOLDER: build
+          BUILD_SCRIPT: npm install && npm run deploy
