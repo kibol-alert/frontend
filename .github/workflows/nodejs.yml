@@ -23,8 +23,7 @@ jobs:
         github_token: ${{ secrets.token }}
     - name: npm install and deploy
       run: |
-        git config --local user.email "bboy_sokol@o2.pl"
-        git config --local user.name "bboysokol"
+        git config --local user.name "kibol-alert"
         npm ci
         npm run deploy --if-present   
       env:
