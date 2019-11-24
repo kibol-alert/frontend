@@ -24,5 +24,7 @@ jobs:
       run: |
         npm ci
         npm run deploy --if-present
+        $ git config --global user.name "bboysokol"
+        $ git config --global user.email "bboy_sokol@o2.pl"
       env:
         CI: true
