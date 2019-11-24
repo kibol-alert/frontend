@@ -23,6 +23,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: deploy
       run: |
+        git config --global user.email "bboy_sokol@o2.pl"
+        git config --global user.name "bboysokol"
         npm ci
         npm run deploy --if-present
       env:
