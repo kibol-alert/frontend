@@ -3,6 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
+import Button from '@material-ui/core/Button';
+import Registration from '../components/Registration';
 
 const useStyles = makeStyles(theme => ({
   modal: {
@@ -32,9 +34,16 @@ export default function TransitionsModal() {
 
   return (
     <div>
-      <button type="button" onClick={handleOpen}>
-        react-transition-group
-      </button>
+      <Button
+       type="button"
+        onClick={handleOpen}
+        fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              >
+        Don't have an account? Sign Up
+      </Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -49,8 +58,8 @@ export default function TransitionsModal() {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <h2 id="transition-modal-title">Transition modal</h2>
-            <p id="transition-modal-description">react-transition-group animates me.</p>
+            <h2 id="transition-modal-title">Zarejestruj się</h2>
+            <p id="transition-modal-description"><Registration/></p>
           </div>
         </Fade>
       </Modal>
