@@ -1,6 +1,6 @@
 import React from 'react';
-import Registration from './Registration.js'
 
+import SignInSide from '../layouts/LandingPage.js';
 import '../styles/App.css';
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
 
     
     <div >
- <Registration/>
+ <SignInSide/>
     </div>
   );
 }
