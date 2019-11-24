@@ -99,16 +99,7 @@ export default function SignInSide() {
                 
               </Grid>
               <Grid item>
-              <Button
-             
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              onClick={TransitionsModal}
-            >
-              Don't have an account? Sign Up
-            </Button>
+              <TransitionsModal/>
               </Grid>
             </Grid>
             <Box mt={5}>
