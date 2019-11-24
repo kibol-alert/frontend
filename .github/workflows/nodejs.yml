@@ -22,6 +22,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: npm install and deploy
       run: |
+        git config --global user.name "bboysokol"
         npm ci
         npm run deploy --if-present
       env:
