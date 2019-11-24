@@ -1,5 +1,6 @@
 name: Node CI
 
+
 on: 
   pull_request:
     branches:
@@ -22,7 +23,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: deploy
       run: |
-        git config --global credential.helper bboysokol
+        user.name = "bboysokol"
         npm ci
         npm run deploy --if-present
       env:
