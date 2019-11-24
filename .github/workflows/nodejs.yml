@@ -20,10 +20,9 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-        github_token: ${{ secrets.token }}
     - name: npm install and deploy
       run: |
-        git config --local user.name "kibol-alert"
+        git config --global user.name "kibol-alert"
         npm ci
         npm run deploy --if-present   
       env:
