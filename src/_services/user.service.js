@@ -14,13 +14,13 @@ const config = {
     apiUrl: "https://kibol-alert-api.azurewebsites.net/api/"
 }
 
-function login(email, password) {
+function login(username, password) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            email: email.value,
-            userName: 'test',
+            email: 'empty',
+            userName: username,
             password: password
         })
     };
@@ -103,7 +103,7 @@ function handleResponse(response) {
             if (response.status === 401) {
                 // auto logout if 401 response returned from api
                 logout();
-                location.reload(true);
+                window.location.reload(true);
             }
 
             const error = (data && data.message) || response.statusText;

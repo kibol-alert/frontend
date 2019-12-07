@@ -27,7 +27,7 @@ class LoginPage extends React.Component {
         this.props.logout();
 
         this.state = {
-            email: '',
+            username: '',
             password: '',
         };
 
@@ -44,15 +44,15 @@ class LoginPage extends React.Component {
         e.preventDefault();
 
         const { username, password } = this.state;
-        if (email && password) {
-            this.props.login(email, password);
+        if (username && password) {
+            this.props.login(username, password);
         }
     }
 
 
     render() {
         const { loggingIn, classes } = this.props;
-        const { email, password } = this.state;
+        const { username, password } = this.state;
         var loginDiv = {
             maxWidht: '400px',
             display: 'flex',
@@ -74,7 +74,7 @@ class LoginPage extends React.Component {
 
                     <Grid item xs={12} sm={8} md={4} component={Paper} elevation={6} square >
                         <div className={clsx(classes.paper)}>
-                            <img style={imgStyle} src="../../assets/logo-back.png"></img>
+                            <img style={imgStyle} src="/logo-back.png"></img>
                             <Typography component="h1" variant="h5">
                                 Sign in
                         </Typography>
@@ -84,12 +84,12 @@ class LoginPage extends React.Component {
                                     margin="normal"
                                     required
                                     fullWidth
-                                    id="email"
-                                    label="Email Address"
-                                    name="email"
-                                    value={email}
+                                    id="username"
+                                    label="Username"
+                                    name="username"
+                                    value={username}
                                     onChange={this.handleChange}
-                                    autoComplete="email"
+                                    autoComplete="username"
                                     autoFocus
                                 />
                                 <TextField
