@@ -15,6 +15,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import icon from '../assets/logo-back.png'
+import Image from '../_components/Image'
 // import TransitionsModal from './RegisterModal';
 
 
@@ -74,7 +76,7 @@ class LoginPage extends React.Component {
 
                     <Grid item xs={12} sm={8} md={4} component={Paper} elevation={6} square >
                         <div className={clsx(classes.paper)}>
-                            <img style={imgStyle} src="/logo-back.png"></img>
+                            <Image style={imgStyle} icon={icon} />
                             <Typography component="h1" variant="h5">
                                 Sign in
                         </Typography>
