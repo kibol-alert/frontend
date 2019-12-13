@@ -23,11 +23,21 @@ class HomePage extends React.Component {
             height: '90vh',
             width: '100vw'
         }
+        var userPosition = {
+            lat: 0,
+            lng: 0,
+        }
+        navigator.geolocation.getCurrentPosition((position) => {
+            userPosition.lat = position.coords.latitude;
+            userPosition.lng = position.coords.longitude
+        });
 
+        var position = [userPosition.lat, userPosition.lng];
+        console.log(position);
         return (
             <div id="test" style={styles} >
                 <SideBar right pageWrapId={"test"} outerContainerId={"app"} />
-                <MainMap></MainMap>
+                <MainMap position={position}></MainMap>
             </div >
         );
     }

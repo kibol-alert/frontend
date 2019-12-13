@@ -21,6 +21,7 @@ class App extends React.Component {
 
     render() {
         const { alert } = this.props;
+
         return (
             <div>
                 {alert.message &&
