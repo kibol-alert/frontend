@@ -24,7 +24,6 @@ function login(username, password) {
             password: password
         })
     };
-    console.log(requestOptions, config.apiUrl)
     return fetch(`${config.apiUrl}Authentication/Login`, requestOptions)
         .then(handleResponse)
         .then(user => {
@@ -41,7 +40,6 @@ function logout() {
 }
 
 function register(user) {
-    console.log(user);
     const requestOptions = {
         method: 'POST',
         headers: {
@@ -56,7 +54,6 @@ function register(user) {
 
         })
     };
-    console.log(requestOptions, config.apiUrl);
     return fetch(`${config.apiUrl}Authentication/Register`, requestOptions).then(handleResponse);
 }
 

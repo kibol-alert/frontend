@@ -1,15 +1,16 @@
 import React from 'react';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
+import { Map, Marker, Popup, TileLayer, Circle } from 'react-leaflet'
 import ReactLeafletSearch from "react-leaflet-search"
+
+var isDanger = false;
 
 function PositionMarker(props) {
 	const isTracked = props.isTracked;
 	const location = props.location;
-	console.log(props);
 	if (isTracked) {
 		return <Marker position={location}>
 			<Popup>
-				<span>A pretty CSS3 popup. <br /> Easily customizable.</span>
+				<span>Jesteś tutaj!</span>
 			</Popup>
 		</Marker>
 	}
@@ -18,9 +19,26 @@ function PositionMarker(props) {
 	}
 }
 
+function AlertArea(props) {
+	return <div style={{ position: 'fixed', bottom: 10, left: 10, zIndex: 1000, width: '300px', height: '200px', background: 'white', display:
+	'flex', justifyContent:'center', alignItems:'center' }}>
+		Jesteś teraz: 
+	</div>
+}
+
+function ExampleCircle(props){
+	const location = props.location;
+	console.log(isDanger)
+	return <Circle center={location} radius={1000} >
+				<Popup>
+						<span>Zagłebie</span>
+				</Popup>
+			</Circle>
+}
+
 const SearchComponent = props => (
 	<ReactLeafletSearch
-		position="bottomleft"
+		position="topleft"
 		inputPlaceholder="Wpisz nazwę miasta"
 		search={[]} // Setting this to [lat, lng] gives initial search input to the component and map flies to that coordinates, its like search from props not from user
 		zoom={12} // Default value is 10
@@ -40,21 +58,34 @@ class MainMap extends React.Component {
 
 		};
 	}
+	onEachFeature(props) {
+		console.log(props);
+		// layer.on({
+		//   click: this.clickToFeature.bind(this)
+		// });
+	  }
 
+	  clickToFeature(e) {
+		var layer = e.target;
+		console.log("I clicked on " + layer.feature.properties.name);
+   
+	 }
 	render() {
-		console.log(this.props.location)
 		const { latitude, longitude, zoom } = this.props.location;
 		const isTracked = this.props.isTracked;
-		console.log(latitude)
 		return (
-			<Map center={[latitude, longitude]} zoom={zoom}>
-				<SearchComponent />
-				<TileLayer
-					attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-					url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-				/>
-				<PositionMarker location={[latitude, longitude]} isTracked={isTracked} />
-			</Map>
+			<div>
+				<Map center={[latitude, longitude]} zoom={zoom}>
+					<SearchComponent />
+					<ExampleCircle location={[latitude, longitude]} onEachFeature={this.onEachFeature(this)}/>
+					<TileLayer
+						attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+						url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+					/>
+					<PositionMarker location={[latitude, longitude]} isTracked={isTracked} />
+				</Map>
+				<AlertArea></AlertArea>
+			</div>
 		);
 	}
 }
