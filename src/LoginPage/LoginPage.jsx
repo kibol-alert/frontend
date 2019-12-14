@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 import { userActions } from '../_actions';
 
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -14,7 +13,6 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
 import icon from '../assets/logo-back.png'
 import Image from '../_components/Image'
 // import TransitionsModal from './RegisterModal';
@@ -53,7 +51,7 @@ class LoginPage extends React.Component {
 
 
     render() {
-        const { loggingIn, classes } = this.props;
+        const { classes } = this.props;
         const { username, password } = this.state;
         var loginDiv = {
             maxWidht: '400px',
@@ -72,15 +70,15 @@ class LoginPage extends React.Component {
         return (
             <Grid container component="main" style={mainDiv}>
                 <CssBaseline />
-                <Grid item sm={12} md={12} className={clsx(classes.image)} style={loginDiv}>
+                <Grid item sm={12} md={12} className={classes.image} style={loginDiv}>
 
                     <Grid item xs={12} sm={8} md={4} component={Paper} elevation={6} square >
-                        <div className={clsx(classes.paper)}>
+                        <div className={classes.paper}>
                             <Image style={imgStyle} icon={icon} />
                             <Typography component="h1" variant="h5">
                                 Sign in
                         </Typography>
-                            <form onSubmit={this.handleSubmit} className={clsx(classes.form)} noValidate>
+                            <form onSubmit={this.handleSubmit} className={classes.form} noValidate>
                                 <TextField
                                     variant="outlined"
                                     margin="normal"
@@ -113,7 +111,7 @@ class LoginPage extends React.Component {
                                     fullWidth
                                     variant="contained"
                                     color="primary"
-                                    className={clsx(classes.submit)}
+                                    className={classes.submit}
                                 >
                                     Sign In
                                 </Button>
@@ -128,7 +126,7 @@ class LoginPage extends React.Component {
                                             variant="contained"
                                             color="primary"
                                             to="/register"
-                                            className={clsx(classes.submit)}
+                                            className={classes.submit}
                                         >
                                             Register
                                         </Button>

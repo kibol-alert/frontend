@@ -8,36 +8,45 @@ import "./styles.css";
 import { userActions } from '../_actions';
 
 class HomePage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            location: {
+                latitude: 52,
+                longitude: 19,
+                zoom: 7
+            },
+            isTracked: false
+        };
+    }
     componentDidMount() {
-        this.props.getUsers();
+        this.findCoordinates();
     }
 
     handleDeleteUser(id) {
         return (e) => this.props.deleteUser(id);
     }
 
-    render() {
-        const { user, users } = this.props;
+    findCoordinates = () => {
+        navigator.geolocation.getCurrentPosition(
+            position => {
+                const location = position.coords;
+                const isTracked = true;
+                this.setState({ location, isTracked });
+            }
+        );
 
+    };
+
+    render() {
         var styles = {
             height: '90vh',
             width: '100vw'
         }
-        var userPosition = {
-            lat: 0,
-            lng: 0,
-        }
-        navigator.geolocation.getCurrentPosition((position) => {
-            userPosition.lat = position.coords.latitude;
-            userPosition.lng = position.coords.longitude
-        });
-
-        var position = [userPosition.lat, userPosition.lng];
-        console.log(position);
         return (
             <div id="test" style={styles} >
                 <SideBar right pageWrapId={"test"} outerContainerId={"app"} />
-                <MainMap position={position}></MainMap>
+                <MainMap isTracked={this.state.isTracked} location={this.state.location}></MainMap>
             </div >
         );
     }

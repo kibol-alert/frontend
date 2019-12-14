@@ -1,14 +1,12 @@
 // import config from 'config';
-import { authHeader, parseJWT } from '../_helpers';
+import {
+    authHeader
+} from '../_helpers';
 
 export const userService = {
     login,
     logout,
     register,
-    getAll,
-    getById,
-    update,
-    delete: _delete
 };
 const config = {
     apiUrl: "https://kibol-alert-api.azurewebsites.net/api/"
@@ -17,7 +15,9 @@ const config = {
 function login(username, password) {
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json'
+        },
         body: JSON.stringify({
             email: 'empty',
             userName: username,
@@ -40,29 +40,13 @@ function logout() {
     localStorage.removeItem('user');
 }
 
-function getAll() {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);
-}
-
-function getById(id) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then(handleResponse);
-}
-
 function register(user) {
     console.log(user);
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json'
+        },
         body: JSON.stringify({
             email: user.email,
             userName: user.username,
@@ -74,26 +58,6 @@ function register(user) {
     };
     console.log(requestOptions, config.apiUrl);
     return fetch(`${config.apiUrl}Authentication/Register`, requestOptions).then(handleResponse);
-}
-
-function update(user) {
-    const requestOptions = {
-        method: 'PUT',
-        headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
-    };
-
-    return fetch(`${config.apiUrl}/users/${user.id}`, requestOptions).then(handleResponse);;
-}
-
-// prefixed function name with underscore because delete is a reserved word in javascript
-function _delete(id) {
-    const requestOptions = {
-        method: 'DELETE',
-        headers: authHeader()
-    };
-
-    return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then(handleResponse);
 }
 
 function handleResponse(response) {
