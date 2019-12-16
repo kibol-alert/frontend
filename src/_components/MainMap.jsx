@@ -2,7 +2,7 @@ import React from 'react';
 import { Map, Marker, Popup, TileLayer, Circle } from 'react-leaflet'
 import ReactLeafletSearch from "react-leaflet-search"
 
-var isDanger = false;
+// var isDanger = false;
 
 function PositionMarker(props) {
 	const isTracked = props.isTracked;
@@ -20,20 +20,22 @@ function PositionMarker(props) {
 }
 
 function AlertArea(props) {
-	return <div style={{ position: 'fixed', bottom: 10, left: 10, zIndex: 1000, width: '300px', height: '200px', background: 'white', display:
-	'flex', justifyContent:'center', alignItems:'center' }}>
-		Jesteś teraz: 
+	return <div style={{
+		position: 'fixed', bottom: 10, left: 10, zIndex: 1000, width: '300px', height: '200px', background: 'white', display:
+			'flex', justifyContent: 'center', alignItems: 'center'
+	}}>
+		Jesteś teraz:
 	</div>
 }
 
-function ExampleCircle(props){
+function ExampleCircle(props) {
 	const location = props.location;
-	console.log(isDanger)
+
 	return <Circle center={location} radius={1000} >
-				<Popup>
-						<span>Zagłebie</span>
-				</Popup>
-			</Circle>
+		<Popup>
+			<span>Zagłebie</span>
+		</Popup>
+	</Circle>
 }
 
 const SearchComponent = props => (
@@ -59,17 +61,17 @@ class MainMap extends React.Component {
 		};
 	}
 	onEachFeature(props) {
-		console.log(props);
+
 		// layer.on({
 		//   click: this.clickToFeature.bind(this)
 		// });
-	  }
+	}
 
-	  clickToFeature(e) {
-		var layer = e.target;
-		console.log("I clicked on " + layer.feature.properties.name);
-   
-	 }
+	clickToFeature(e) {
+		// var layer = e.target;
+
+
+	}
 	render() {
 		const { latitude, longitude, zoom } = this.props.location;
 		const isTracked = this.props.isTracked;
@@ -77,7 +79,7 @@ class MainMap extends React.Component {
 			<div>
 				<Map center={[latitude, longitude]} zoom={zoom}>
 					<SearchComponent />
-					<ExampleCircle location={[latitude, longitude]} onEachFeature={this.onEachFeature(this)}/>
+					<ExampleCircle location={[latitude, longitude]} onEachFeature={this.onEachFeature(this)} />
 					<TileLayer
 						attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 						url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'

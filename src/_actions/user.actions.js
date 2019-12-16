@@ -22,7 +22,6 @@ function login(username, password) {
         dispatch(request({
             username
         }));
-
         userService.login(username, password)
             .then(
                 user => {
@@ -30,8 +29,9 @@ function login(username, password) {
                     history.push('/');
                 },
                 error => {
-                    dispatch(failure(error.toString()));
-                    dispatch(alertActions.error(error.toString()));
+                    let errorMessage = JSON.parse(error.response.data.responseException.exceptionMessage).errorMessage
+                    dispatch(failure(errorMessage.toString()));
+                    dispatch(alertActions.error(errorMessage.toString()));
                 }
             );
     };
@@ -77,8 +77,9 @@ function register(user) {
                     dispatch(alertActions.success('Registration successful'));
                 },
                 error => {
-                    dispatch(failure(error.toString()));
-                    dispatch(alertActions.error(error.toString()));
+                    let errorMessage = JSON.parse(error.response.data.responseException.exceptionMessage).errorMessage
+                    dispatch(failure(errorMessage.toString()));
+                    dispatch(alertActions.error(errorMessage.toString()));
                 }
             );
     };

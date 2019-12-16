@@ -21,7 +21,7 @@ class App extends React.Component {
     }
     componentDidUpdate() {
         const { alert } = this.props;
-        alert.type === 'alert-danger' ? toast.error(this.props.alert.message) : toast.success(this.props.alert.message);
+        if (Object.keys(alert).length > 0) alert.type === 'alert-danger' ? toast.error(this.props.alert.message) : toast.success(this.props.alert.message);
 
     }
     render() {
