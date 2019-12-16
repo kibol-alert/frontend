@@ -2,21 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
+import { MenuItem, FormControl, InputLabel, Select } from '@material-ui/core';
+import api from '../_helpers/api'
+
 
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
 
 import { userActions } from '../_actions';
 
@@ -30,8 +26,9 @@ class RegisterPage extends React.Component {
                 email: '',
                 password: '',
                 confirmedPassword: '',
-                clubId: 1
-            }
+                clubId: ''
+            },
+            clubs: []
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -51,16 +48,20 @@ class RegisterPage extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-
         const { user } = this.state;
         if (user.username && user.password && user.password && user.email) {
             this.props.register(user);
         }
     }
 
+    async componentDidMount() {
+        let result = await api.get('Club/GetClubs?skip=0&take=10');
+        this.setState({ clubs: result.data.result.payload })
+    }
+
     render() {
-        const { registering, classes } = this.props;
-        const { user } = this.state;
+        const { classes } = this.props;
+        const { user, clubs } = this.state;
         var loginDiv = {
             maxWidht: '400px',
             display: 'flex',
@@ -74,14 +75,13 @@ class RegisterPage extends React.Component {
         return (
             <Grid container component="main" style={mainDiv}>
                 <CssBaseline />
-                <Grid item sm={12} md={12} className={clsx(classes.image)} style={loginDiv}>
-
+                <Grid item sm={12} md={12} className={classes.image} style={loginDiv}>
                     <Grid item xs={12} sm={8} md={4} component={Paper} elevation={6} square >
-                        <div className={clsx(classes.paper)}>
+                        <div className={classes.paper}>
                             <Typography component="h1" variant="h5">
                                 Register
                             </Typography>
-                            <form onSubmit={this.handleSubmit} className={clsx(classes.form)} noValidate>
+                            <form onSubmit={this.handleSubmit} className={classes.form} noValidate>
                                 <TextField
                                     variant="outlined"
                                     margin="normal"
@@ -134,12 +134,32 @@ class RegisterPage extends React.Component {
                                     id="confirmedPassword"
                                     autoComplete="current-password"
                                 />
+                                <FormControl fullWidth variant="outlined" className={classes.formControl}>
+                                    <InputLabel id="demo-simple-select-outlined-label">
+                                        Your Club
+                                    </InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-outlined-label"
+                                        id="demo-simple-select-outlined"
+                                        value={user.clubId}
+                                        onChange={this.handleChange}
+                                        fullWidth
+                                        name="clubId"
+                                    >
+                                        <MenuItem value="">
+                                            <em>None</em>
+                                        </MenuItem>
+                                        {clubs.map((value, index) => {
+                                            return <MenuItem key={value.id} value={value.id}>{value.name}</MenuItem>
+                                        })}
+                                    </Select>
+                                </FormControl>
                                 <Button
                                     type="submit"
                                     fullWidth
                                     variant="contained"
                                     color="primary"
-                                    className={clsx(classes.submit)}
+                                    className={classes.submit}
                                 >
                                     Register
                             </Button>
@@ -154,7 +174,7 @@ class RegisterPage extends React.Component {
                                             variant="contained"
                                             color="primary"
                                             to="/login"
-                                            className={clsx(classes.submit)}
+                                            className={classes.submit}
                                         >
                                             Back
                                     </Button>
