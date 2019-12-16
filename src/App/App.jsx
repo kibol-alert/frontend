@@ -8,24 +8,26 @@ import { PrivateRoute } from '../_components';
 import { HomePage } from '../HomePage';
 import { LoginPage } from '../LoginPage';
 import { RegisterPage } from '../RegisterPage';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class App extends React.Component {
     constructor(props) {
         super(props);
 
         history.listen((location, action) => {
-            // clear alert on location change
             this.props.clearAlerts();
         });
     }
-
-    render() {
+    componentDidUpdate() {
         const { alert } = this.props;
+        if (Object.keys(alert).length > 0) alert.type === 'alert-danger' ? toast.error(this.props.alert.message) : toast.success(this.props.alert.message);
+
+    }
+    render() {
         return (
             <div>
-                {alert.message &&
-                    <div className={`alert ${alert.type}`}>{alert.message}</div>
-                }
+                <ToastContainer />
                 <Router history={history}>
                     <Switch>
                         <PrivateRoute exact path="/" component={HomePage} />
