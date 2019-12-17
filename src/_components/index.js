@@ -1,4 +1,5 @@
 export * from './PrivateRoute';
 export * from './MainMap';
 export * from './SideBar';
-export * from './Image'
+export * from './Image';
+export * from './ClubsModal';
