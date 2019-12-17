@@ -7,6 +7,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import { MenuItem, FormControl, InputLabel, Select } from '@material-ui/core';
 import api from '../_helpers/api'
+import { ValidatorForm, TextValidator, SelectValidator } from 'react-material-ui-form-validator';
 
 
 import Paper from '@material-ui/core/Paper';
@@ -57,6 +58,13 @@ class RegisterPage extends React.Component {
     async componentDidMount() {
         let result = await api.get('Club/GetClubs?skip=0&take=10');
         this.setState({ clubs: result.data.result.payload })
+
+        ValidatorForm.addValidationRule('isSamePassword', () => {
+            return this.state.user.password === this.state.user.confirmedPassword
+        });
+        ValidatorForm.addValidationRule('isLong', (value) => {
+            return value.length >= 8;
+        });
     }
 
     render() {
@@ -79,36 +87,37 @@ class RegisterPage extends React.Component {
                     <Grid item xs={12} sm={8} md={4} component={Paper} elevation={6} square >
                         <div className={classes.paper}>
                             <Typography component="h1" variant="h5">
-                                Register
+                                Rejestracja
                             </Typography>
-                            <form onSubmit={this.handleSubmit} className={classes.form} noValidate>
-                                <TextField
+                            <ValidatorForm ref="form" onSubmit={this.handleSubmit} className={classes.form}>
+                                <TextValidator
                                     variant="outlined"
                                     margin="normal"
                                     required
                                     fullWidth
                                     id="email"
-                                    label="Email Address"
+                                    label="Adres Email"
                                     name="email"
+                                    validators={['required', 'isEmail']}
+                                    errorMessages={['To pole jest wymagane', 'To musi być email!']}
                                     value={user.email}
                                     onChange={this.handleChange}
-                                    autoComplete="email"
                                     autoFocus
                                 />
-                                <TextField
+                                <TextValidator
                                     variant="outlined"
                                     margin="normal"
                                     required
                                     fullWidth
                                     id="username"
-                                    label="Username"
+                                    label="Ksywa"
                                     name="username"
+                                    validators={['required']}
+                                    errorMessages={['To pole jest wymagane']}
                                     value={user.username}
                                     onChange={this.handleChange}
-                                    autoComplete="username"
-                                    autoFocus
                                 />
-                                <TextField
+                                <TextValidator
                                     variant="outlined"
                                     margin="normal"
                                     required
@@ -116,12 +125,13 @@ class RegisterPage extends React.Component {
                                     name="password"
                                     value={user.password}
                                     onChange={this.handleChange}
-                                    label="Password"
+                                    validators={['required', 'isLong', 'matchRegexp:[0-9]', 'matchRegexp:[A-Z]', 'matchRegexp:[a-z]', 'matchRegexp:[!@#$%^&*(),.?":{}|<>]']}
+                                    errorMessages={['To pole jest wymagane', 'Minimalna długość to 8', 'Hasło musi zawierać liczbe', 'Hasło musi zawierać duża litere', 'Hasło musi zawierać małą litere', 'Hasło musi posiadać znak specjalny (!@#$%^&*(),.?":{}|<>])']}
+                                    label="Hasło"
                                     type="password"
                                     id="password"
-                                    autoComplete="current-password"
                                 />
-                                <TextField
+                                <TextValidator
                                     variant="outlined"
                                     margin="normal"
                                     required
@@ -129,31 +139,30 @@ class RegisterPage extends React.Component {
                                     name="confirmedPassword"
                                     value={user.confirmedPassword}
                                     onChange={this.handleChange}
-                                    label="Confirm password"
+                                    validators={['required', 'isSamePassword']}
+                                    errorMessages={['To pole jest wymagane', 'Hasła nie są takie same']}
+                                    label="Powtórz hasło"
                                     type="password"
                                     id="confirmedPassword"
-                                    autoComplete="current-password"
                                 />
-                                <FormControl fullWidth variant="outlined" className={classes.formControl}>
-                                    <InputLabel id="demo-simple-select-outlined-label">
-                                        Your Club
-                                    </InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-outlined-label"
-                                        id="demo-simple-select-outlined"
-                                        value={user.clubId}
-                                        onChange={this.handleChange}
-                                        fullWidth
-                                        name="clubId"
-                                    >
-                                        <MenuItem value="">
-                                            <em>None</em>
-                                        </MenuItem>
-                                        {clubs.map((value, index) => {
-                                            return <MenuItem key={value.id} value={value.id}>{value.name}</MenuItem>
-                                        })}
-                                    </Select>
-                                </FormControl>
+                                <InputLabel id="demo-simple-select-outlined-label">Wybierz swój klub</InputLabel>
+                                <SelectValidator
+                                    id="demo-simple-select-outlined"
+                                    variant="outlined"
+                                    value={user.clubId}
+                                    onChange={this.handleChange}
+                                    validators={['required']}
+                                    errorMessages={['To pole jest wymagane']}
+                                    fullWidth
+                                    name="clubId"
+                                >
+                                    <MenuItem value="">
+                                        <em>Wybierz klub</em>
+                                    </MenuItem>
+                                    {clubs.map((value, index) => {
+                                        return <MenuItem key={value.id} value={value.id}>{value.name}</MenuItem>
+                                    })}
+                                </SelectValidator>
                                 <Button
                                     type="submit"
                                     fullWidth
@@ -183,7 +192,7 @@ class RegisterPage extends React.Component {
                                 <Box mt={5}>
 
                                 </Box>
-                            </form>
+                            </ValidatorForm>
                         </div>
                     </Grid>
                 </Grid>
