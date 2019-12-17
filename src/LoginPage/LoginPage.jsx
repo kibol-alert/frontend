@@ -1,12 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-
 import { userActions } from '../_actions';
-
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
 
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
@@ -15,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import icon from '../assets/logo-back.png'
 import Image from '../_components/Image'
-import { ValidatorForm, TextValidator, SelectValidator } from 'react-material-ui-form-validator';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 // import TransitionsModal from './RegisterModal';
 
 
@@ -86,7 +83,7 @@ class LoginPage extends React.Component {
                                     required
                                     fullWidth
                                     id="username"
-                                    label="Username"
+                                    label="Ksywa"
                                     name="username"
                                     value={username}
                                     onChange={this.handleChange}
@@ -103,7 +100,7 @@ class LoginPage extends React.Component {
                                     name="password"
                                     value={password}
                                     onChange={this.handleChange}
-                                    label="Password"
+                                    label="Hasło"
                                     validators={['required']}
                                     errorMessages={['To pole jest wymagane']}
                                     type="password"
