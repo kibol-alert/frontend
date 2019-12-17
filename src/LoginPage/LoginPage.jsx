@@ -1,12 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-
 import { userActions } from '../_actions';
-
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
 
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
@@ -15,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import icon from '../assets/logo-back.png'
 import Image from '../_components/Image'
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 // import TransitionsModal from './RegisterModal';
 
 
@@ -76,23 +74,25 @@ class LoginPage extends React.Component {
                         <div className={classes.paper}>
                             <Image style={imgStyle} icon={icon} />
                             <Typography component="h1" variant="h5">
-                                Sign in
+                                Zaloguj się
                         </Typography>
-                            <form onSubmit={this.handleSubmit} className={classes.form} noValidate>
-                                <TextField
+                            <ValidatorForm ref="form" onSubmit={this.handleSubmit} className={classes.form}>
+                                <TextValidator
                                     variant="outlined"
                                     margin="normal"
                                     required
                                     fullWidth
                                     id="username"
-                                    label="Username"
+                                    label="Ksywa"
                                     name="username"
                                     value={username}
                                     onChange={this.handleChange}
+                                    validators={['required']}
+                                    errorMessages={['To pole jest wymagane']}
                                     autoComplete="username"
                                     autoFocus
                                 />
-                                <TextField
+                                <TextValidator
                                     variant="outlined"
                                     margin="normal"
                                     required
@@ -100,7 +100,9 @@ class LoginPage extends React.Component {
                                     name="password"
                                     value={password}
                                     onChange={this.handleChange}
-                                    label="Password"
+                                    label="Hasło"
+                                    validators={['required']}
+                                    errorMessages={['To pole jest wymagane']}
                                     type="password"
                                     id="password"
                                     autoComplete="current-password"
@@ -113,7 +115,7 @@ class LoginPage extends React.Component {
                                     color="primary"
                                     className={classes.submit}
                                 >
-                                    Sign In
+                                    Zaloguj się
                                 </Button>
                                 <Grid container>
                                     <Grid item xs>
@@ -128,14 +130,14 @@ class LoginPage extends React.Component {
                                             to="/register"
                                             className={classes.submit}
                                         >
-                                            Register
+                                            Zarejestruj
                                         </Button>
                                     </Grid>
                                 </Grid>
                                 <Box mt={5}>
 
                                 </Box>
-                            </form>
+                            </ValidatorForm>
                         </div>
                     </Grid>
                 </Grid>
