@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import { MenuItem, FormControl, InputLabel, Select } from '@material-ui/core';
+import { MenuItem, InputLabel } from '@material-ui/core';
 import api from '../_helpers/api'
 import { ValidatorForm, TextValidator, SelectValidator } from 'react-material-ui-form-validator';
 
