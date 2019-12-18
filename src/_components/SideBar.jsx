@@ -1,7 +1,11 @@
 import React from 'react';
 import { slide as Menu } from 'react-burger-menu'
 import { Link } from 'react-router-dom';
-
+import MyProfileModal from '../SideBarModals/MyProfileModal';
+import MyClubModal from '../SideBarModals/MyClubModal';
+import ClubsModal from '../SideBarModals/ClubsModal';
+import StatsModal from '../SideBarModals/StatsModal';
+import Button from '@material-ui/core/Button';
 export default props => {
 	return (
 		// Pass on our props
@@ -10,15 +14,21 @@ export default props => {
 				Home
 		</a>
 
-			<a className="menu-item" href="/burgers">
-				Burgers
+			<a className="menu-item" >
+				<MyProfileModal/>
 		</a>
 
-			<a className="menu-item" href="/pizzas">
-				Pizzas
+			<a className="menu-item" >
+				<MyClubModal/>
+		</a>
+		<a className="menu-item" >
+				<StatsModal/>
+		</a>
+		<a className="menu-item" >
+				<ClubsModal/>
 		</a>
 
-			<Link to="/login">Logout</Link>
+			<Link to="/login"> <Button color="secondary">Wyloguj się</Button></Link>
 		</Menu>
 	);
 };
