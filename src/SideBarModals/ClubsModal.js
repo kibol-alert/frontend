@@ -1,59 +1,112 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import MaterialTable from 'material-table';
+import api from '../_helpers/api'
 
-const useStyles = makeStyles(theme => ({
-  modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-}));
+export default function ResponsiveDialog() {
+	const [open, setOpen] = React.useState(false);
+	const [state, setState] = React.useState({
+		columns: [
+			{ title: 'Id', field: 'id' },
+			{ title: 'Nazwa', field: 'name' },
+			{ title: 'Miasto', field: 'city' },
+			{ title: 'Liga', field: 'league' },
+			{ title: 'Logo', field: 'logoUri' },
+		],
+	});
+	const theme = useTheme();
+	const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-export default function ClubsModal() {
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+	const [clubs, setClubs] = useState([]);
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+	const handleClickOpen = async () => {
+		await getClubs();
+		setOpen(true);
+	};
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+	const getClubs = async () => {
+		let result = await api.get('Club/GetClubs?skip=0&take=10');
+		console.log(result);
+		setClubs(result.data.result.payload);
+		console.log(clubs);
+	}
 
-  return (
-    <div>
-      <Button color="secondary" onClick={handleOpen}>Kluby</Button>
-      
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={open}>
-          <div className={classes.paper}>
-            <h2 id="transition-modal-title">Kluby</h2>
-            <p id="transition-modal-description">react-transition-group animates me.</p>
-          </div>
-        </Fade>
-      </Modal>
-    </div>
-  );
+
+	const handleClose = () => {
+		setOpen(false);
+	};
+
+	return (
+		<div>
+			<Button variant="contained" color="primary" onClick={handleClickOpen}>
+				Kluby
+      		</Button>
+			<Dialog
+				fullScreen={fullScreen}
+
+				open={open}
+				onClose={handleClose}
+				aria-labelledby="responsive-dialog-title"
+			>
+				<DialogTitle id="responsive-dialog-title">
+					{"Kluby"}
+					<IconButton aria-label="close" onClick={handleClose}>
+						<CloseIcon />
+					</IconButton>
+				</DialogTitle>
+				<DialogContent>
+					<MaterialTable
+						columns={state.columns}
+						data={clubs}
+						editable={{
+							onRowAdd: newData =>
+								new Promise(resolve => {
+									setTimeout(() => {
+										resolve();
+										setState(prevState => {
+											const data = [...prevState.data];
+											data.push(newData);
+											return { ...prevState, data };
+										});
+									}, 600);
+								}),
+							onRowUpdate: (newData, oldData) =>
+								new Promise(resolve => {
+									setTimeout(() => {
+										resolve();
+										if (oldData) {
+											setState(prevState => {
+												const data = [...prevState.data];
+												data[data.indexOf(oldData)] = newData;
+												return { ...prevState, data };
+											});
+										}
+									}, 600);
+								}),
+							onRowDelete: oldData =>
+								new Promise(resolve => {
+									setTimeout(() => {
+										resolve();
+										setState(prevState => {
+											const data = [...prevState.data];
+											data.splice(data.indexOf(oldData), 1);
+											return { ...prevState, data };
+										});
+									}, 600);
+								}),
+						}}
+					/>
+				</DialogContent>
+			</Dialog>
+		</div>
+	);
 }

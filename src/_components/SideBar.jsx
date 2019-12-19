@@ -15,20 +15,20 @@ export default props => {
 		</a>
 
 			<a className="menu-item" >
-				<MyProfileModal/>
-		</a>
+				<MyProfileModal />
+			</a>
 
 			<a className="menu-item" >
-				<MyClubModal/>
-		</a>
-		<a className="menu-item" >
-				<StatsModal/>
-		</a>
-		<a className="menu-item" >
-				<ClubsModal/>
-		</a>
+				<MyClubModal />
+			</a>
+			<a className="menu-item" >
+				<StatsModal />
+			</a>
+			<a className="menu-item" >
+				<ClubsModal />
+			</a>
 
-			<Link to="/login"> <Button color="secondary">Wyloguj się</Button></Link>
+			<Link to="/login"> <Button variant="contained" color="primary">Wyloguj się</Button></Link>
 		</Menu>
 	);
 };
