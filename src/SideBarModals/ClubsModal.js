@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -12,7 +11,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import MaterialTable from 'material-table';
 import api from '../_helpers/api'
 
-export default function ResponsiveDialog() {
+export default function ClubsModal() {
 	const [open, setOpen] = React.useState(false);
 	const [state, setState] = React.useState({
 		columns: [
