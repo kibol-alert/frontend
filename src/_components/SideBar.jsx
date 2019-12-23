@@ -1,6 +1,7 @@
 import React from 'react';
 import { slide as Menu } from 'react-burger-menu'
 import { Link } from 'react-router-dom';
+import { parseJwt } from '../_helpers/parseJWT';
 import MyProfileModal from '../SideBarModals/MyProfileModal';
 import MyClubModal from '../SideBarModals/MyClubModal';
 import ClubsModal from '../SideBarModals/ClubsModal';

@@ -60,18 +60,11 @@ class MainMap extends React.Component {
 
 		};
 	}
-	onEachFeature(props) {
 
-		// layer.on({
-		//   click: this.clickToFeature.bind(this)
-		// });
+	isMarkerInsideCircle(props) {
+		console.log(props);
 	}
 
-	clickToFeature(e) {
-		// var layer = e.target;
-
-
-	}
 	render() {
 		const { latitude, longitude, zoom } = this.props.location;
 		const isTracked = this.props.isTracked;
@@ -79,7 +72,7 @@ class MainMap extends React.Component {
 			<div>
 				<Map center={[latitude, longitude]} zoom={zoom}>
 					<SearchComponent />
-					<ExampleCircle location={[latitude, longitude]} onEachFeature={this.onEachFeature(this)} />
+					<ExampleCircle location={[latitude, longitude]} isMarkerInsideCircle={this.isMarkerInsideCircle()} />
 					<TileLayer
 						attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 						url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
