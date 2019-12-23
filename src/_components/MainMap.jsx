@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Map, Marker, Popup, TileLayer, Circle } from 'react-leaflet'
 import ReactLeafletSearch from "react-leaflet-search"
+import cheapRuler from 'cheap-ruler'
+import api from '../_helpers/api'
+import axios from 'axios'
+
 
 // var isDanger = false;
 
@@ -19,21 +23,26 @@ function PositionMarker(props) {
 	}
 }
 
-function AlertArea(props) {
-	return <div style={{
-		position: 'fixed', bottom: 10, left: 10, zIndex: 1000, width: '300px', height: '200px', background: 'white', display:
-			'flex', justifyContent: 'center', alignItems: 'center'
-	}}>
-		Jesteś teraz:
-	</div>
-}
+function ClubArea(props) {
+	const [data, setData] = useState({ lat: 0, lon: 0 });
+	const { club, markerPosition } = props;
+	useEffect(() => {
+		const fetchData = async () => {
+			const result = await axios.get('https://nominatim.openstreetmap.org/search?city=' + club.city + '&format=json&polygon_geojson=1')
+			setData(result.data[0]);
+		};
+		fetchData();
+	}, []);
 
-function ExampleCircle(props) {
-	const location = props.location;
+	const location = [data.lat, data.lon];
+	const radius = 30000;
 
-	return <Circle center={location} radius={1000} >
+	var ruler = cheapRuler(0, 'meters');
+	var distance = ruler.distance(location, markerPosition)
+	var result = distance < radius ? 'inside' : 'outside';
+	return <Circle center={location} radius={radius} >
 		<Popup>
-			<span>Zagłebie</span>
+			<span>{club.name + 'Marker ' + result + ' of the circle'}</span>
 		</Popup>
 	</Circle>
 }
@@ -57,29 +66,34 @@ class MainMap extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-
+			clubs: []
 		};
 	}
 
-	isMarkerInsideCircle(props) {
-		console.log(props);
+	async componentWillMount() {
+		let result = await api.get('Club/GetClubs?skip=0&take=100');
+		this.setState({ clubs: result.data.result.payload })
 	}
 
 	render() {
 		const { latitude, longitude, zoom } = this.props.location;
+		const { clubs } = this.state;
 		const isTracked = this.props.isTracked;
 		return (
 			<div>
-				<Map center={[latitude, longitude]} zoom={zoom}>
+				<Map ref="map" center={[latitude, longitude]} zoom={zoom}>
 					<SearchComponent />
-					<ExampleCircle location={[latitude, longitude]} isMarkerInsideCircle={this.isMarkerInsideCircle()} />
+					{
+						clubs.map((club, i) => {
+							return (<ClubArea key={i} club={club} markerPosition={[latitude, longitude]} />)
+						})
+					}
 					<TileLayer
 						attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 						url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
 					/>
 					<PositionMarker location={[latitude, longitude]} isTracked={isTracked} />
 				</Map>
-				<AlertArea></AlertArea>
 			</div>
 		);
 	}

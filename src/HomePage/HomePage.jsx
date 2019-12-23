@@ -40,7 +40,6 @@ class HomePage extends React.Component {
 
     render() {
         var styles = {
-            height: '90vh',
             width: '100vw'
         }
         return (

@@ -35,7 +35,6 @@ export default function ResponsiveDialog() {
 
 	const getClubs = async () => {
 		let result = await api.get('Club/GetClubs?skip=0&take=10');
-		console.log(result);
 		setClubs(result.data.result.payload);
 		console.log(clubs);
 	}
