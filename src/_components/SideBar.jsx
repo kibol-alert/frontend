@@ -6,12 +6,14 @@ import MyProfileModal from '../SideBarModals/MyProfileModal';
 import MyClubModal from '../SideBarModals/MyClubModal';
 import ClubsModal from '../SideBarModals/ClubsModal';
 import StatsModal from '../SideBarModals/StatsModal';
+import LogsModal from '../SideBarModals/LogsModal';
 import Button from '@material-ui/core/Button';
 import api from '../_helpers/api';
 
 export default props => {
 	const [user, setUser] = useState({
 		userName: "",
+		isAdmin: false,
 		club: {
 			name: "",
 			logoUri: ""
@@ -55,6 +57,11 @@ export default props => {
 			<a className="menu-item" >
 				<ClubsModal />
 			</a>
+			{user.isAdmin === true &&
+				<a className="menu-item" >
+					<LogsModal />
+				</a>
+			}
 
 			<Link to="/login"> <Button fullWidth={true} variant="contained" color="primary">Wyloguj się</Button></Link>
 
