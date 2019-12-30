@@ -55,7 +55,7 @@ class RegisterPage extends React.Component {
     }
 
     async componentDidMount() {
-        let result = await api.get('Club/GetClubs?skip=0&take=10');
+        let result = await api.get('Club/GetClubs?skip=0&take=40');
         this.setState({ clubs: result.data.result.payload })
 
         ValidatorForm.addValidationRule('isSamePassword', () => {
@@ -158,9 +158,10 @@ class RegisterPage extends React.Component {
                                     <MenuItem value="">
                                         <em>Wybierz klub</em>
                                     </MenuItem>
-                                    {clubs.map((value, index) => {
-                                        return <MenuItem key={value.id} value={value.id}>{value.name}</MenuItem>
-                                    })}
+                                    {
+                                        clubs.map((value, index) => {
+                                            return <MenuItem key={value.id} value={value.id}>{value.name}</MenuItem>
+                                        })}
                                 </SelectValidator>
                                 <Button
                                     type="submit"

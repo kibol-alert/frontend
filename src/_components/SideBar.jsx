@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { slide as Menu } from 'react-burger-menu'
 import { Link } from 'react-router-dom';
 import { parseJwt } from '../_helpers/parseJWT';
@@ -7,22 +7,31 @@ import MyClubModal from '../SideBarModals/MyClubModal';
 import ClubsModal from '../SideBarModals/ClubsModal';
 import StatsModal from '../SideBarModals/StatsModal';
 import Button from '@material-ui/core/Button';
+import api from '../_helpers/api';
+
 export default props => {
-	const id = parseJwt(localStorage.getItem('user')).unique_name;
-	// let result = api.get('user/getUser');
-	const user = {
-		username: "Testowy",
-		club: {
-			name: "KlubTestowy"
+	const [user, setUser] = useState({ userName: "" });
+
+	useEffect(() => {
+		async function getUser() {
+			const id = parseJwt(localStorage.getItem('user')).unique_name;
+			const result = await api.get('user/getUser?id=' + id);
+			console.log(result);
+			if (result.data.result.success === true)
+				setUser(result.data.result.payload);
 		}
-	}
+		getUser();
+	}, [])
 
 	return (
 		// Pass on our props
 		<Menu {...props}>
-			<a className="menu-item" href="/">
-				Home
-		</a>
+			<h1>
+				{user.userName}
+			</h1>
+			<h2>
+				{user.clu}
+			</h2>
 
 			<a className="menu-item" >
 				<MyProfileModal />
