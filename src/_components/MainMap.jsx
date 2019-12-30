@@ -70,7 +70,7 @@ class MainMap extends React.Component {
 		};
 	}
 
-	async componentWillMount() {
+	async componentDidMount() {
 		let result = await api.get('Club/GetClubs?skip=0&take=100');
 		this.setState({ clubs: result.data.result.payload })
 	}

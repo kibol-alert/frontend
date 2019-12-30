@@ -10,13 +10,18 @@ import Button from '@material-ui/core/Button';
 import api from '../_helpers/api';
 
 export default props => {
-	const [user, setUser] = useState({ userName: "" });
+	const [user, setUser] = useState({
+		userName: "",
+		club: {
+			name: "",
+			logoUri: ""
+		}
+	});
 
 	useEffect(() => {
 		async function getUser() {
 			const id = parseJwt(localStorage.getItem('user')).unique_name;
 			const result = await api.get('user/getUser?id=' + id);
-			console.log(result);
 			if (result.data.result.success === true)
 				setUser(result.data.result.payload);
 		}
@@ -26,12 +31,16 @@ export default props => {
 	return (
 		// Pass on our props
 		<Menu {...props}>
-			<h1>
-				{user.userName}
-			</h1>
-			<h2>
-				{user.clu}
-			</h2>
+
+			<div style={{
+				'display': 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'
+			}}>
+				<img src={user.club.logoUri} alt="club_logo"></img>
+				<h3>{user.club.name}</h3>
+				<h1>
+					{user.userName}
+				</h1>
+			</div>
 
 			<a className="menu-item" >
 				<MyProfileModal />
@@ -47,7 +56,8 @@ export default props => {
 				<ClubsModal />
 			</a>
 
-			<Link to="/login"> <Button variant="contained" color="primary">Wyloguj się</Button></Link>
-		</Menu>
+			<Link to="/login"> <Button fullWidth={true} variant="contained" color="primary">Wyloguj się</Button></Link>
+
+		</Menu >
 	);
 };

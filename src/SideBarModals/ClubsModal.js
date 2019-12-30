@@ -36,7 +36,6 @@ export default function ResponsiveDialog() {
 	const getClubs = async () => {
 		let result = await api.get('Club/GetClubs?skip=0&take=10');
 		setClubs(result.data.result.payload);
-		console.log(clubs);
 	}
 
 
@@ -46,7 +45,7 @@ export default function ResponsiveDialog() {
 
 	return (
 		<div>
-			<Button variant="contained" color="primary" onClick={handleClickOpen}>
+			<Button fullWidth={true} variant="contained" color="primary" onClick={handleClickOpen}>
 				Kluby
       		</Button>
 			<Dialog

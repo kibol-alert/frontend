@@ -26,7 +26,7 @@ export default function ResponsiveDialog() {
 
   return (
     <div>
-      <Button variant="contained" color="primary" onClick={handleClickOpen}>
+      <Button fullWidth={true} variant="contained" color="primary" onClick={handleClickOpen}>
         STATYSTYKI
       </Button>
       <Dialog
