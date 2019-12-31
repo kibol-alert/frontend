@@ -10,10 +10,12 @@ import { useTheme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
-export default function ResponsiveDialog() {
+export default props => {
   const [open, setOpen] = React.useState(false);
+  const user = props.user;
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  console.log(user);
 
 
   const handleClickOpen = () => {
@@ -37,25 +39,23 @@ export default function ResponsiveDialog() {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title">
-          {"Use Google's location service?"}
+          {"MÓJ PROFIL"}
           <IconButton aria-label="close" onClick={handleClose}>
             <CloseIcon />
           </IconButton>
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Let Google help apps determine location. This means sending anonymous location data to
-						Google, even when no apps are running.
-          </DialogContentText>
+
+          <div style={{
+            'display': 'flex', justifyContent: 'center', flexDirection: 'column'
+          }}>
+            <h4>Ksywa: {user.userName}</h4>
+            <h4>Email: {user.email}</h4>
+            <h4>Klub: {user.club.name}</h4>
+            <h4>Admin: {user.isAdmin ? "tak" : "nie"}</h4>
+          </div>
+
         </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose} color="primary">
-            Disagree
-          </Button>
-          <Button onClick={handleClose} color="primary" autoFocus>
-            Agree
-          </Button>
-        </DialogActions>
       </Dialog>
     </div>
   );

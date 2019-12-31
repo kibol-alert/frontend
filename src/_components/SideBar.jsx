@@ -45,11 +45,11 @@ export default props => {
 			</div>
 
 			<a className="menu-item" >
-				<MyProfileModal />
+				<MyProfileModal user={user} />
 			</a>
 
 			<a className="menu-item" >
-				<MyClubModal />
+				<MyClubModal club={user.club} />
 			</a>
 			<a className="menu-item" >
 				<StatsModal />
