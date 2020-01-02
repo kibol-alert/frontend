@@ -11,27 +11,9 @@ import Button from '@material-ui/core/Button';
 import api from '../_helpers/api';
 
 export default props => {
-	const [user, setUser] = useState({
-		userName: "",
-		isAdmin: false,
-		club: {
-			name: "",
-			logoUri: ""
-		}
-	});
-
-	useEffect(() => {
-		async function getUser() {
-			const id = parseJwt(localStorage.getItem('user')).unique_name;
-			const result = await api.get('user/getUser?id=' + id);
-			if (result.data.result.success === true)
-				setUser(result.data.result.payload);
-		}
-		getUser();
-	}, [])
+	const { user } = props;
 
 	return (
-		// Pass on our props
 		<Menu {...props}>
 
 			<div style={{

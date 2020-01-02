@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { setState } from 'react';
+import { parseJwt } from '../_helpers/parseJWT';
+import api from '../_helpers/api'
 
 import { connect } from 'react-redux';
 import MainMap from '../_components/MainMap';
@@ -16,15 +18,31 @@ class HomePage extends React.Component {
                 longitude: 19,
                 zoom: 7
             },
+            user: {
+                userName: "",
+                isAdmin: false,
+                club: {
+                    name: "",
+                    logoUri: ""
+                }
+            },
             isTracked: false
         };
     }
     componentDidMount() {
+        this.getUser();
         this.findCoordinates();
     }
 
     handleDeleteUser(id) {
         return (e) => this.props.deleteUser(id);
+    }
+
+    async getUser() {
+        const id = parseJwt(localStorage.getItem('user')).unique_name;
+        const result = await api.get('user/getUser?id=' + id);
+        if (result.data.result.success === true)
+            this.setState({ user: result.data.result.payload });
     }
 
     findCoordinates = () => {
@@ -42,10 +60,11 @@ class HomePage extends React.Component {
         var styles = {
             width: '100vw'
         }
+        const { user } = this.state;
         return (
             <div id="test" style={styles} >
-                <SideBar right pageWrapId={"test"} outerContainerId={"app"} />
-                <MainMap isTracked={this.state.isTracked} location={this.state.location}></MainMap>
+                <SideBar right user={user} pageWrapId={"test"} outerContainerId={"app"} />
+                <MainMap user={user} isTracked={this.state.isTracked} location={this.state.location}></MainMap>
             </div >
         );
     }

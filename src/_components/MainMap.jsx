@@ -22,7 +22,7 @@ function PositionMarker(props) {
 }
 
 function ClubArea(props) {
-	const { club, markerPosition } = props;
+	const { club, markerPosition, userClub } = props;
 	useEffect(() => {
 		const fetchData = async () => {
 			if (club.latitude === null && club.longitude === null) {
@@ -42,14 +42,30 @@ function ClubArea(props) {
 	}, []);
 
 	if (club.latitude !== null && club.longitude !== null) {
+		const relationType = club.clubRelations.find(item => { return item.clubId === userClub.id })
+		let color = "#bbbbbb"
+		let status = "Możesz śmiało tu przyjść"
+		if (relationType) {
+			if (relationType.relation === 1) {
+				color = "#d80000";
+				status = "Lepiej nie wchodź na to terytorium"
+			} else color = "#228b22"
+		}
 		const location = [club.latitude, club.longitude];
 		const radius = 30000;
 		var ruler = cheapRuler(0, 'meters');
 		var distance = ruler.distance(location, markerPosition)
-		var result = distance < radius ? 'inside' : 'outside';
-		return <Circle center={location} color={"#228B22"} radius={radius} >
+		if (distance < radius) {
+			if (relationType && relationType.relation === 1)
+				status = "Lepiej stąd uciekaj"
+			else
+				status = "Jesteś tu bezpieczny"
+		}
+		let dupa = 2;
+		return <Circle onClick={(event) => { event.target.bringToBack() }} center={location} zIndex={dupa} color={color} radius={radius} >
 			<Popup>
-				<span>{club.name + 'Marker ' + result + ' of the circle'}</span>
+				<p>{'Teren: ' + club.name}</p>
+				<span>{status}</span>
 			</Popup>
 		</Circle>
 	} else
@@ -87,6 +103,7 @@ class MainMap extends React.Component {
 	render() {
 		const { latitude, longitude, zoom } = this.props.location;
 		const { clubs } = this.state;
+		const { user } = this.props;
 		const isTracked = this.props.isTracked;
 		return (
 			<div>
@@ -94,7 +111,7 @@ class MainMap extends React.Component {
 					<SearchComponent />
 					{
 						clubs.map((club, i) => {
-							return (<ClubArea key={i} club={club} markerPosition={[latitude, longitude]} />)
+							return (<ClubArea key={i} club={club} userClub={user.club} markerPosition={[latitude, longitude]} />)
 						})
 					}
 					<TileLayer
