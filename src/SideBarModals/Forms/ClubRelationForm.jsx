@@ -92,6 +92,7 @@ export default props => {
 								clubs.map((value, index) => {
 									if (value.id !== secondClubId)
 										return <MenuItem key={value.id} value={value.id}>{value.name}</MenuItem>
+									return (null)
 								})
 							}
 						</SelectValidator>
@@ -115,6 +116,7 @@ export default props => {
 								clubs.map((value, index) => {
 									if (value.id !== firstClubId)
 										return <MenuItem key={value.id} value={value.id}>{value.name}</MenuItem>
+									return (null)
 								})
 							}
 						</SelectValidator>

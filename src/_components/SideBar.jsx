@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { slide as Menu } from 'react-burger-menu'
 import { Link } from 'react-router-dom';
-import { parseJwt } from '../_helpers/parseJWT';
 import MyProfileModal from '../SideBarModals/MyProfileModal';
 import MyClubModal from '../SideBarModals/MyClubModal';
 import ClubsModal from '../SideBarModals/ClubsModal';
 import StatsModal from '../SideBarModals/StatsModal';
 import LogsModal from '../SideBarModals/LogsModal';
 import Button from '@material-ui/core/Button';
-import api from '../_helpers/api';
 
 export default props => {
 	const { user } = props;

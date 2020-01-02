@@ -1,4 +1,4 @@
-import React, { setState } from 'react';
+import React from 'react';
 import { parseJwt } from '../_helpers/parseJWT';
 import api from '../_helpers/api'
 
