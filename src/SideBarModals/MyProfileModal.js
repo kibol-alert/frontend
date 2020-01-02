@@ -15,7 +15,6 @@ export default props => {
   const user = props.user;
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  console.log(user);
 
 
   const handleClickOpen = () => {

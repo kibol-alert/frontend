@@ -10,9 +10,10 @@ import { useTheme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import MaterialTable from 'material-table';
+import ClubRelationForm from './Forms/ClubRelationForm'
 import api from '../_helpers/api'
 
-export default function ResponsiveDialog() {
+export default props => {
 	const [open, setOpen] = React.useState(false);
 	const [state, setState] = React.useState({
 		columns: [
@@ -27,6 +28,7 @@ export default function ResponsiveDialog() {
 	const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
 	const [clubs, setClubs] = useState([]);
+	const { user } = props;
 
 	const handleClickOpen = async () => {
 		await getClubs();
@@ -34,15 +36,13 @@ export default function ResponsiveDialog() {
 	};
 
 	const getClubs = async () => {
-		let result = await api.get('Club/GetClubs?skip=0&take=10');
+		let result = await api.get('Club/GetClubs?skip=0&take=100');
 		setClubs(result.data.result.payload);
 	}
-
 
 	const handleClose = () => {
 		setOpen(false);
 	};
-
 	return (
 		<div>
 			<Button fullWidth={true} variant="contained" color="primary" onClick={handleClickOpen}>
@@ -62,6 +62,9 @@ export default function ResponsiveDialog() {
 					</IconButton>
 				</DialogTitle>
 				<DialogContent>
+					{user.isAdmin === true &&
+						<ClubRelationForm clubs={clubs}></ClubRelationForm>
+					}
 					<MaterialTable
 						columns={state.columns}
 						data={clubs}

@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Map, Marker, Popup, TileLayer, Circle } from 'react-leaflet'
 import ReactLeafletSearch from "react-leaflet-search"
 import cheapRuler from 'cheap-ruler'
+import { toast } from 'react-toastify';
 import api from '../_helpers/api'
 import axios from 'axios'
-
-
-// var isDanger = false;
 
 function PositionMarker(props) {
 	const isTracked = props.isTracked;
@@ -18,33 +16,44 @@ function PositionMarker(props) {
 			</Popup>
 		</Marker>
 	}
-	else {
+	else
 		return null
-	}
+
 }
 
 function ClubArea(props) {
-	const [data, setData] = useState({ lat: 0, lon: 0 });
 	const { club, markerPosition } = props;
 	useEffect(() => {
 		const fetchData = async () => {
-			const result = await axios.get('https://nominatim.openstreetmap.org/search?city=' + club.city + '&format=json&polygon_geojson=1')
-			setData(result.data[0]);
+			if (club.latitude === null && club.longitude === null) {
+				const coords = await axios.get('https://nominatim.openstreetmap.org/search?city=' + club.city + '&format=json')
+				await api.post('Club/EditClub?id=' + club.id, {
+					name: null,
+					league: null,
+					logoUri: null,
+					longitude: parseFloat(coords.data[0].lon),
+					latitude: parseFloat(coords.data[0].lat)
+				})
+				toast.info("Odśwież stronę (F5)")
+			}
+
 		};
 		fetchData();
 	}, []);
 
-	const location = [data.lat, data.lon];
-	const radius = 30000;
-
-	var ruler = cheapRuler(0, 'meters');
-	var distance = ruler.distance(location, markerPosition)
-	var result = distance < radius ? 'inside' : 'outside';
-	return <Circle center={location} radius={radius} >
-		<Popup>
-			<span>{club.name + 'Marker ' + result + ' of the circle'}</span>
-		</Popup>
-	</Circle>
+	if (club.latitude !== null && club.longitude !== null) {
+		const location = [club.latitude, club.longitude];
+		const radius = 30000;
+		var ruler = cheapRuler(0, 'meters');
+		var distance = ruler.distance(location, markerPosition)
+		var result = distance < radius ? 'inside' : 'outside';
+		return <Circle center={location} color={"#228B22"} radius={radius} >
+			<Popup>
+				<span>{club.name + 'Marker ' + result + ' of the circle'}</span>
+			</Popup>
+		</Circle>
+	} else
+		return (null);
 }
 
 const SearchComponent = props => (
@@ -91,6 +100,7 @@ class MainMap extends React.Component {
 					<TileLayer
 						attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 						url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+						noWrap={true}
 					/>
 					<PositionMarker location={[latitude, longitude]} isTracked={isTracked} />
 				</Map>

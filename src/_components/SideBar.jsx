@@ -55,7 +55,7 @@ export default props => {
 				<StatsModal />
 			</a>
 			<a className="menu-item" >
-				<ClubsModal />
+				<ClubsModal user={user} />
 			</a>
 			{user.isAdmin === true &&
 				<a className="menu-item" >
