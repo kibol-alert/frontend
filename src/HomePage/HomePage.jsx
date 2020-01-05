@@ -60,7 +60,6 @@ class HomePage extends React.Component {
                 this.setState({ location, isTracked });
             }
         );
-
     };
 
     render() {

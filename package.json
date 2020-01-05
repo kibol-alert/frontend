@@ -37,6 +37,7 @@
     "react-validation": "^3.0.7",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
+    "styled-components": "^4.4.1",
     "styles-loader": "^1.0.2"
   },
   "devDependencies": {
