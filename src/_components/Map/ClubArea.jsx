@@ -2,16 +2,11 @@ import api from '../../_helpers/api'
 import React, { useEffect } from 'react';
 import axios from 'axios'
 import cheapRuler from 'cheap-ruler'
-import { Circle, Popup } from 'react-leaflet'
+import { Marker, Circle, Popup } from 'react-leaflet'
+import Leaflet from 'leaflet'
 import { toast } from 'react-toastify';
 
-const areEqual = (prevProps, nextProps) => {
-	if (prevProps.markerPosition !== nextProps.markerPosition)
-		return false
-	else
-		return true;
-};
-const ClubArea = React.memo(({ club, markerPosition, userClub, isDanger }) => {
+const ClubArea = ({ club, markerPosition, userClub, isDanger }) => {
 	useEffect(() => {
 		const fetchData = async () => {
 			if (club.latitude === null && club.longitude === null) {
@@ -53,7 +48,9 @@ const ClubArea = React.memo(({ club, markerPosition, userClub, isDanger }) => {
 				status = "Jesteś tu bezpieczny"
 
 		}
-		return <Circle onClick={(event) => { event.target.bringToBack() }} center={location} color={color} radius={radius} >
+		const customMarker = Leaflet.icon({ iconUrl: club.logoUri, iconSize: [38, 38] })
+		return <Circle onMouseOver={(event) => { event.target.openPopup() }} onMouseOut={(event) => { event.target.closePopup() }} onClick={(event) => { event.target.bringToBack() }} center={location} color={color} radius={radius} >
+			<Marker position={location} icon={customMarker}></Marker>
 			<Popup>
 				<p>{'Teren: ' + club.name}</p>
 				<span>{status}</span>
@@ -61,6 +58,6 @@ const ClubArea = React.memo(({ club, markerPosition, userClub, isDanger }) => {
 		</Circle>
 	} else
 		return (null);
-}, areEqual)
+}
 
 export default ClubArea;

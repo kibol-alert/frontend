@@ -26,10 +26,12 @@ class MainMap extends React.Component {
 	}
 
 	render() {
-		console.log('render')
+
 		const { latitude, longitude, zoom } = this.props.location;
 		const { user, clubs, isTracked } = this.props;
 		const { dangerLevel } = this.state;
+
+		console.log(dangerLevel)
 		return (
 			<div>
 				<Map center={[latitude, longitude]} zoom={zoom}>
@@ -46,7 +48,7 @@ class MainMap extends React.Component {
 					/>
 					<UserMarker location={[latitude, longitude]} isTracked={isTracked} />
 				</Map>
-				<AlertZone>{dangerLevel === 1 ? 'danger' : 'safe'}</AlertZone>
+				<AlertZone>{dangerLevel === 1 ? 'Jesteś na wrogim terenie!' : 'Jesteś tutaj bezpieczny!'}</AlertZone>
 			</div>
 		);
 	}

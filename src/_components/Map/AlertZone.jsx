@@ -4,7 +4,7 @@ import styled from 'styled-components'
 const AlertZone = styled.div`
 	background: rgba(55,58,71,0.8);
 	color: white;
-	z-index: 2000;
+	z-index: 500;
 	position: fixed;
 	display: flex;
 	justify-content:center;
