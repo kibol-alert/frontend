@@ -26,11 +26,13 @@ class HomePage extends React.Component {
                     logoUri: ""
                 }
             },
+            clubs: [],
             isTracked: false
         };
     }
     componentDidMount() {
         this.getUser();
+        this.getClubs();
         this.findCoordinates();
     }
 
@@ -43,6 +45,11 @@ class HomePage extends React.Component {
         const result = await api.get('user/getUser?id=' + id);
         if (result.data.result.success === true)
             this.setState({ user: result.data.result.payload });
+    }
+
+    async getClubs() {
+        let result = await api.get('Club/GetClubs?skip=0&take=100');
+        this.setState({ clubs: result.data.result.payload })
     }
 
     findCoordinates = () => {
@@ -60,11 +67,11 @@ class HomePage extends React.Component {
         var styles = {
             width: '100vw'
         }
-        const { user } = this.state;
+        const { user, clubs } = this.state;
         return (
             <div id="test" style={styles} >
                 <SideBar right user={user} pageWrapId={"test"} outerContainerId={"app"} />
-                <MainMap user={user} isTracked={this.state.isTracked} location={this.state.location}></MainMap>
+                <MainMap clubs={clubs} user={user} isTracked={this.state.isTracked} location={this.state.location}></MainMap>
             </div >
         );
     }

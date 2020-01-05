@@ -22,7 +22,7 @@ function PositionMarker(props) {
 }
 
 function ClubArea(props) {
-	const { club, markerPosition, userClub } = props;
+	const { club, markerPosition, userClub, isDanger } = props;
 	useEffect(() => {
 		const fetchData = async () => {
 			if (club.latitude === null && club.longitude === null) {
@@ -53,13 +53,16 @@ function ClubArea(props) {
 		}
 		const location = [club.latitude, club.longitude];
 		const radius = 30000;
-		var ruler = cheapRuler(0, 'meters');
-		var distance = ruler.distance(location, markerPosition)
+		const ruler = cheapRuler(0, 'meters');
+		const distance = ruler.distance(location, markerPosition)
 		if (distance < radius) {
-			if (relationType && relationType.relation === 1)
+			if (relationType && relationType.relation === 1) {
 				status = "Lepiej stąd uciekaj"
+				isDanger(relationType.relation)
+			}
 			else
 				status = "Jesteś tu bezpieczny"
+
 		}
 		let dupa = 2;
 		return <Circle onClick={(event) => { event.target.bringToBack() }} center={location} zIndex={dupa} color={color} radius={radius} >
@@ -87,23 +90,30 @@ const SearchComponent = props => (
 	/>
 )
 
+const AlertZone = props => {
+	const [isDanger, setDangerLevel] = React.useState(0);
+	return <div style={{ backgroundColor: 'grey', zIndex: 2000, position: 'fixed', bottom: '10px', height: '50px', width: '50px' }}>aaa</div>
+}
+
 class MainMap extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			clubs: []
+			clubs: [],
+			dangerLevel: 0
 		};
+
+		this.handleDangerLevel = this.handleDangerLevel.bind(this);
 	}
 
-	async componentDidMount() {
-		let result = await api.get('Club/GetClubs?skip=0&take=100');
-		this.setState({ clubs: result.data.result.payload })
+	handleDangerLevel(data) {
+		console.log(data);
+
 	}
 
 	render() {
 		const { latitude, longitude, zoom } = this.props.location;
-		const { clubs } = this.state;
-		const { user } = this.props;
+		const { user, clubs } = this.props;
 		const isTracked = this.props.isTracked;
 		return (
 			<div>
@@ -111,16 +121,17 @@ class MainMap extends React.Component {
 					<SearchComponent />
 					{
 						clubs.map((club, i) => {
-							return (<ClubArea key={i} club={club} userClub={user.club} markerPosition={[latitude, longitude]} />)
+							return (<ClubArea key={i} club={club} isDanger={this.handleDangerLevel} userClub={user.club} markerPosition={[latitude, longitude]} />)
 						})
 					}
 					<TileLayer
-						attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-						url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+						attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+						url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 						noWrap={true}
 					/>
 					<PositionMarker location={[latitude, longitude]} isTracked={isTracked} />
 				</Map>
+				<AlertZone></AlertZone>
 			</div>
 		);
 	}
