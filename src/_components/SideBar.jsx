@@ -29,7 +29,7 @@ export default props => {
 			</a>
 
 			<a className="menu-item" >
-				<MyClubModal club={user.club} />
+				<MyClubModal club={user.club} user={user} />
 			</a>
 			<a className="menu-item" >
 				<ClubsModal user={user} />
