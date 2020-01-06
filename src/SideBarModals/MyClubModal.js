@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
+import axios from 'axios';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -16,13 +17,17 @@ export default props => {
   const club = props.club;
   const [open, setOpen] = React.useState(false);
   const [myClub, setClub] = React.useState([]);
+  const [clubStats, setClubStats] = React.useState(null);
   const [state, setState] = React.useState({
-    columns: [
-      { title: 'Id', field: 'id' },
-      { title: 'Nazwa', field: 'name' },
-      { title: 'Miasto', field: 'city' },
-      { title: 'Liga', field: 'league' },
-      { title: 'Logo', field: 'logoUri' },
+    relationColumns: [
+      { title: 'Id klubu', field: 'clubId' },
+      { title: 'Nazwa klubu', field: 'clubName' },
+      { title: 'Stosunek', field: 'relation', lookup: { 1: 'Kosa', 2: 'Sztama' } },
+    ],
+    chantsColumns: [
+      { title: 'Id', field: 'clubId' },
+      { title: 'Nazwa klubu', field: 'clubName' },
+      { title: 'Stosunek', field: 'relation' },
     ],
   });
   const theme = useTheme();
@@ -30,8 +35,13 @@ export default props => {
 
   const handleClickOpen = async () => {
     await getClub();
+    await getClubStats();
     setOpen(true);
   };
+
+  const getClubStats = async () => {
+    const result = await axios.get('http://livescore-api.com/api-client/leagues/table.json?key=MbwgnQV36wUjNtfm&secret=1rbuqob8EksnPzNCKjS7aOahk5A8zQuB&league=19')
+  }
 
   const handleClose = () => {
     setOpen(false);
@@ -82,8 +92,8 @@ export default props => {
             </Grid>
           </Grid>
           <MaterialTable
-            columns={state.columns}
-            data={myClub.relations}
+            columns={state.relationColumns}
+            data={myClub.clubRelations}
             title="Relacje"
             editable={{
               onRowAdd: newData =>
@@ -125,7 +135,7 @@ export default props => {
           />
 
           <MaterialTable
-            columns={state.columns}
+            columns={state.chantsColumns}
             data={myClub.chants}
             title="Przyśpiewki"
             editable={{

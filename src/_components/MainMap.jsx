@@ -48,7 +48,9 @@ class MainMap extends React.Component {
 					/>
 					<UserMarker location={[latitude, longitude]} isTracked={isTracked} />
 				</Map>
-				<AlertZone>{dangerLevel === 1 ? 'Jesteś na wrogim terenie!' : 'Jesteś tutaj bezpieczny!'}</AlertZone>
+				{
+					isTracked && <AlertZone><b>{dangerLevel === 1 ? 'Jesteś na wrogim terenie!' : 'Jesteś tutaj bezpieczny!'}</b></AlertZone>
+				}
 			</div>
 		);
 	}

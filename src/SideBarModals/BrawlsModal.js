@@ -8,7 +8,7 @@ import { useTheme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import MaterialTable from 'material-table';
-import ClubRelationForm from './Forms/ClubRelationForm'
+import BrawlForm from './Forms/BrawlForm'
 import api from '../_helpers/api'
 
 export default props => {
@@ -16,10 +16,11 @@ export default props => {
 	const [state, setState] = React.useState({
 		columns: [
 			{ title: 'Id', field: 'id' },
-			{ title: 'Nazwa', field: 'name' },
-			{ title: 'Miasto', field: 'city' },
-			{ title: 'Liga', field: 'league' },
-			{ title: 'Logo', field: 'logoUri' },
+			{ title: 'Nazwa klubu', field: 'firstClubName' },
+			{ title: 'Nazwa drugiego klubu', field: 'secondClubName' },
+			{ title: 'Data', field: 'date' },
+			{ title: 'Longitude', field: 'longitude' },
+			{ title: 'Latitude', field: 'latitude' },
 		],
 	});
 	const theme = useTheme();
@@ -34,7 +35,8 @@ export default props => {
 	};
 
 	const getClubs = async () => {
-		let result = await api.get('Club/GetClubs?skip=0&take=100');
+		let result = await api.get('Brawl/GetBrawls?skip=0&take=100');
+		console.log(result);
 		setClubs(result.data.result.payload);
 	}
 
@@ -61,7 +63,7 @@ export default props => {
 				</DialogTitle>
 				<DialogContent>
 					{user.isAdmin === true &&
-						<ClubRelationForm clubs={clubs}></ClubRelationForm>
+						<BrawlForm club={user.club}></BrawlForm>
 					}
 					<MaterialTable
 						columns={state.columns}

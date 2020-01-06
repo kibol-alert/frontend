@@ -50,7 +50,12 @@ const ClubArea = ({ club, markerPosition, userClub, isDanger }) => {
 		}
 		const customMarker = Leaflet.icon({ iconUrl: club.logoUri, iconSize: [38, 38] })
 		return <Circle onMouseOver={(event) => { event.target.openPopup() }} onMouseOut={(event) => { event.target.closePopup() }} onClick={(event) => { event.target.bringToBack() }} center={location} color={color} radius={radius} >
-			<Marker position={location} icon={customMarker}></Marker>
+			<Marker position={location} icon={customMarker}>
+				<Popup>
+					<p>{'Teren: ' + club.name}</p>
+					<span>{status}</span>
+				</Popup>
+			</Marker>
 			<Popup>
 				<p>{'Teren: ' + club.name}</p>
 				<span>{status}</span>
