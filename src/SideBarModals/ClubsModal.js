@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import MaterialTable from 'material-table';
 import ClubRelationForm from './Forms/ClubRelationForm'
+import ClubsModalExtension from './ClubsModalExtension'
 import api from '../_helpers/api'
 
 export default props => {
@@ -53,6 +54,9 @@ export default props => {
 				onClose={handleClose}
 				aria-labelledby="responsive-dialog-title"
 			>
+				{user.isAdmin === true &&
+					<ClubRelationForm clubs={clubs}></ClubRelationForm>
+				}
 				<DialogTitle id="responsive-dialog-title">
 					{"Kluby"}
 					<IconButton aria-label="close" onClick={handleClose}>
@@ -60,12 +64,13 @@ export default props => {
 					</IconButton>
 				</DialogTitle>
 				<DialogContent>
-					{user.isAdmin === true &&
-						<ClubRelationForm clubs={clubs}></ClubRelationForm>
-					}
 					<MaterialTable
 						columns={state.columns}
 						data={clubs}
+						detailPanel={rowData => {
+							console.log(rowData)
+							return (<ClubsModalExtension club={rowData} user={user}></ClubsModalExtension>)
+						}}
 						editable={{
 							onRowAdd: newData =>
 								new Promise(resolve => {
