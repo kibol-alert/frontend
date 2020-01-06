@@ -125,35 +125,10 @@ export default props => {
             columns={state.relationColumns}
             data={myClub.clubRelations}
             title="Relacje"
-            editable={{
-              onRowAdd: newData =>
-                new Promise(resolve => {
-                  setTimeout(() => {
-                    resolve();
-                    setState(prevState => {
-                      const data = [...prevState.data];
-                      data.push(newData);
-                      return { ...prevState, data };
-                    });
-                  }, 600);
-                }),
-              onRowDelete: oldData =>
-                new Promise(resolve => {
-                  setTimeout(() => {
-                    resolve();
-                    setState(prevState => {
-                      const data = [...prevState.data];
-                      data.splice(data.indexOf(oldData), 1);
-                      return { ...prevState, data };
-                    });
-                  }, 600);
-                }),
-            }}
           />
           <h3> Przyśpiewki </h3>
           <div className={classes.root}>
             {
-
               myClub.chants.map((chant, i) => {
                 let panel = `panel${i}`
                 return <ExpansionPanel key={i} expanded={expanded === panel} onChange={handleChange(panel)}>

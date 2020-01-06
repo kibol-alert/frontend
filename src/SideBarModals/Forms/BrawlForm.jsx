@@ -41,7 +41,6 @@ export default props => {
 		const result = await api.get('Club/GetClub?id=' + club.id)
 		const enemy = result.data.result.payload.clubRelations.filter(item => item.relation === 1)
 		setEnemyClubs(enemy)
-		console.log(enemy);
 	};
 
 	const handleClose = () => {
@@ -65,7 +64,6 @@ export default props => {
 	const handleSubmit = async () => {
 		const city = await axios.get('https://nominatim.openstreetmap.org/search?city=' + brawlLocation + '&format=json')
 		if (city) {
-			console.log(selectedDate)
 			const result = await api.post('club/AddRelation', {
 				firstClubName: club.clubName,
 				secondClubName: firstClub,

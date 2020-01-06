@@ -31,7 +31,6 @@ class MainMap extends React.Component {
 		const { user, clubs, isTracked } = this.props;
 		const { dangerLevel } = this.state;
 
-		console.log(dangerLevel)
 		return (
 			<div>
 				<Map center={[latitude, longitude]} zoom={zoom}>

@@ -36,7 +36,6 @@ export default props => {
 
 	const getClubs = async () => {
 		let result = await api.get('Brawl/GetBrawls?skip=0&take=100');
-		console.log(result);
 		setClubs(result.data.result.payload);
 	}
 
