@@ -1,8 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import axios from 'axios';
-import Filter from 'bad-words'
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -19,6 +17,7 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChantForm from './Forms/ChantForm';
+import badWords from './badwords'
 
 
 const useStyles = makeStyles(theme => ({
@@ -76,6 +75,7 @@ export default props => {
 
   var Filter = require('bad-words');
   const censored = new Filter();
+  badWords.forEach((item) => censored.addWords(item))
 
   const getClub = async () => {
     let result = await api.get('Club/GetClub?id=' + club.id);
