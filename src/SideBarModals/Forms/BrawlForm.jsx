@@ -27,7 +27,7 @@ export default props => {
 	const [brawlLocation, setBrawlLocation] = useState("")
 	const [firstClub, setFirstClub] = useState("")
 	const [selectedDate, setSelectedDate] = React.useState(new Date(Date.now()));
-	const { club } = props
+	const { club, refreshBrawls } = props
 
 	const theme = useTheme();
 	const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -64,16 +64,20 @@ export default props => {
 	const handleSubmit = async () => {
 		const city = await axios.get('https://nominatim.openstreetmap.org/search?city=' + brawlLocation + '&format=json')
 		if (city) {
-			const result = await api.post('club/AddRelation', {
-				firstClubName: club.clubName,
+			const result = await api.post('brawl/AddBrawl', {
+				firstClubName: club.name,
 				secondClubName: firstClub,
 				date: selectedDate,
-				longitude: city.data[0].long
+				longitude: parseFloat(city.data[0].lon),
+				latitude: parseFloat(city.data[0].lat)
 			}).catch(error => {
 				toast.error("Coś poszło nie tak, upewnij się, że dane są prawidłowe")
 			})
-			if (result)
+			if (result) {
+				console.log(result);
 				toast.success("Ustawke dodano pomyślnie")
+				refreshBrawls();
+			}
 		}
 
 	}

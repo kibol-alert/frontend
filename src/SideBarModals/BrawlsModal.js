@@ -10,12 +10,13 @@ import CloseIcon from '@material-ui/icons/Close';
 import MaterialTable from 'material-table';
 import BrawlForm from './Forms/BrawlForm'
 import api from '../_helpers/api'
+import { toast } from 'react-toastify';
 
 export default props => {
+
 	const [open, setOpen] = React.useState(false);
 	const [state, setState] = React.useState({
 		columns: [
-			{ title: 'Id', field: 'id' },
 			{ title: 'Nazwa klubu', field: 'firstClubName' },
 			{ title: 'Nazwa drugiego klubu', field: 'secondClubName' },
 			{ title: 'Data', field: 'date' },
@@ -26,17 +27,21 @@ export default props => {
 	const theme = useTheme();
 	const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-	const [clubs, setClubs] = useState([]);
+	const [brawls, setBrawls] = useState([]);
 	const { user } = props;
-
 	const handleClickOpen = async () => {
 		await getClubs();
 		setOpen(true);
 	};
 
 	const getClubs = async () => {
+		console.log('test')
 		let result = await api.get('Brawl/GetBrawls?skip=0&take=100');
-		setClubs(result.data.result.payload);
+		setBrawls(result.data.result.payload);
+	}
+	const refreshClub = async (e) => {
+		console.log(e);
+		await getClubs();
 	}
 
 	const handleClose = () => {
@@ -62,48 +67,56 @@ export default props => {
 				</DialogTitle>
 				<DialogContent>
 					{user.isAdmin === true &&
-						<BrawlForm club={user.club}></BrawlForm>
+						<BrawlForm club={user.club} user={user} refreshBrawls={async (e) => await this.refreshClub(e)}></BrawlForm>
 					}
 					<MaterialTable
 						columns={state.columns}
-						data={clubs}
-						editable={{
-							onRowAdd: newData =>
-								new Promise(resolve => {
-									setTimeout(() => {
-										resolve();
-										setState(prevState => {
-											const data = [...prevState.data];
-											data.push(newData);
-											return { ...prevState, data };
-										});
-									}, 600);
-								}),
+						data={brawls}
+						editable={user.isAdmin ? {
 							onRowUpdate: (newData, oldData) =>
 								new Promise(resolve => {
-									setTimeout(() => {
+									setTimeout(async () => {
 										resolve();
 										if (oldData) {
-											setState(prevState => {
-												const data = [...prevState.data];
-												data[data.indexOf(oldData)] = newData;
-												return { ...prevState, data };
-											});
+											const result = await api.post('brawl/editbrawl?id=' + oldData.id, newData)
+											if (result) {
+												setBrawls(prevState => {
+													const refreshedData = prevState.map(item => {
+														console.log(item.id, newData.id)
+														if (item.id === newData.id) {
+															item = newData
+														}
+														return item;
+													})
+													toast.success('Udało się zaktualizować wpis')
+													return refreshedData;
+												});
+											} else
+												toast.error('Nie udało się zaktualizować, spróbuj ponownie później')
 										}
 									}, 600);
 								}),
 							onRowDelete: oldData =>
 								new Promise(resolve => {
-									setTimeout(() => {
+									setTimeout(async () => {
 										resolve();
-										setState(prevState => {
-											const data = [...prevState.data];
-											data.splice(data.indexOf(oldData), 1);
-											return { ...prevState, data };
-										});
+										const result = await api.post('brawl/deletebrawl?id=' + oldData.id)
+											.catch(error => {
+												toast.error('Nie udało się usunąć, spróbuj ponownie później')
+											})
+										if (result) {
+											setBrawls(prevState => {
+												toast.success('Udało się usunąć wpis')
+												prevState.splice(prevState.indexOf(oldData), 1);
+												console.log([...prevState])
+												return [...prevState]
+											});
+										}
+
+
 									}, 600);
 								}),
-						}}
+						} : { test: null }}
 					/>
 				</DialogContent>
 			</Dialog>

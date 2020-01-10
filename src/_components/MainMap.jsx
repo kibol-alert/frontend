@@ -3,6 +3,7 @@ import { Map, TileLayer } from 'react-leaflet'
 import UserMarker from './Map/UserMarker';
 import ClubArea from './Map/ClubArea';
 import Search from './Map/Search';
+import BrawlMarker from './Map/BrawlMarker';
 
 import AlertZone from './Map/AlertZone'
 
@@ -28,7 +29,7 @@ class MainMap extends React.Component {
 	render() {
 
 		const { latitude, longitude, zoom } = this.props.location;
-		const { user, clubs, isTracked } = this.props;
+		const { user, clubs, isTracked, brawls } = this.props;
 		const { dangerLevel } = this.state;
 
 		return (
@@ -38,6 +39,10 @@ class MainMap extends React.Component {
 					{
 						clubs.map((club, i) => {
 							return (<ClubArea key={i} club={club} isDanger={(item) => this.handleDangerLevel(item)} userClub={user.club} markerPosition={[latitude, longitude]} />)
+						})
+					}{
+						brawls.map((brawl, i) => {
+							return (<BrawlMarker key={i} brawl={brawl}></BrawlMarker>)
 						})
 					}
 					<TileLayer

@@ -27,12 +27,14 @@ class HomePage extends React.Component {
                 }
             },
             clubs: [],
+            brawls: [],
             isTracked: false
         };
     }
     componentDidMount() {
         this.getUser();
         this.getClubs();
+        this.getBrawls();
         this.findCoordinates();
     }
 
@@ -52,6 +54,11 @@ class HomePage extends React.Component {
         this.setState({ clubs: result.data.result.payload })
     }
 
+    async getBrawls() {
+        let result = await api.get('Brawl/GetBrawls?skip=0&take=100');
+        this.setState({ brawls: result.data.result.payload })
+    }
+
     findCoordinates = () => {
         navigator.geolocation.getCurrentPosition(
             position => {
@@ -66,11 +73,11 @@ class HomePage extends React.Component {
         var styles = {
             width: '100vw'
         }
-        const { user, clubs } = this.state;
+        const { user, clubs, brawls, isTracked } = this.state;
         return (
             <div id="test" style={styles} >
                 <SideBar right user={user} pageWrapId={"test"} outerContainerId={"app"} />
-                <MainMap clubs={clubs} user={user} isTracked={this.state.isTracked} location={this.state.location}></MainMap>
+                <MainMap clubs={clubs} user={user} brawls={brawls} isTracked={isTracked} location={this.state.location}></MainMap>
             </div >
         );
     }
