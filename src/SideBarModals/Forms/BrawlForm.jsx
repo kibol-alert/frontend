@@ -21,13 +21,12 @@ import {
 } from '@material-ui/pickers';
 
 
-export default props => {
+export default ({ club, user, refreshBrawl }) => {
 	const [open, setOpen] = useState(false);
 	const [enemyClubs, setEnemyClubs] = useState([]);
 	const [brawlLocation, setBrawlLocation] = useState("")
 	const [firstClub, setFirstClub] = useState("")
 	const [selectedDate, setSelectedDate] = React.useState(new Date(Date.now()));
-	const { club, refreshBrawls } = props
 
 	const theme = useTheme();
 	const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -76,7 +75,8 @@ export default props => {
 			if (result) {
 				console.log(result);
 				toast.success("Ustawke dodano pomyślnie")
-				refreshBrawls();
+				await refreshBrawl('refreshed');
+				handleClose();
 			}
 		}
 

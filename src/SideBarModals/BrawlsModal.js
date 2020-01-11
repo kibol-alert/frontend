@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -30,19 +30,19 @@ export default props => {
 	const [brawls, setBrawls] = useState([]);
 	const { user } = props;
 	const handleClickOpen = async () => {
-		await getClubs();
+		await getBrawls();
 		setOpen(true);
 	};
 
-	const getClubs = async () => {
-		console.log('test')
+	const getBrawls = async () => {
+		console.log('fetched')
 		let result = await api.get('Brawl/GetBrawls?skip=0&take=100');
 		setBrawls(result.data.result.payload);
 	}
-	const refreshClub = async (e) => {
+	const refreshBrawls = useCallback(async (e) => {
 		console.log(e);
-		await getClubs();
-	}
+		await getBrawls()
+	}, [])
 
 	const handleClose = () => {
 		setOpen(false);
@@ -60,16 +60,17 @@ export default props => {
 				aria-labelledby="responsive-dialog-title"
 			>
 				<DialogTitle id="responsive-dialog-title">
-					{"Kluby"}
+					{"Ustawki"}
 					<IconButton aria-label="close" onClick={handleClose}>
 						<CloseIcon />
 					</IconButton>
 				</DialogTitle>
 				<DialogContent>
 					{user.isAdmin === true &&
-						<BrawlForm club={user.club} user={user} refreshBrawls={async (e) => await this.refreshClub(e)}></BrawlForm>
+						<BrawlForm club={user.club} user={user} refreshBrawl={(e) => refreshBrawls(e)}></BrawlForm>
 					}
 					<MaterialTable
+						title="Ustawki"
 						columns={state.columns}
 						data={brawls}
 						editable={user.isAdmin ? {
@@ -105,12 +106,7 @@ export default props => {
 												toast.error('Nie udało się usunąć, spróbuj ponownie później')
 											})
 										if (result) {
-											setBrawls(prevState => {
-												toast.success('Udało się usunąć wpis')
-												prevState.splice(prevState.indexOf(oldData), 1);
-												console.log([...prevState])
-												return [...prevState]
-											});
+											getBrawls();
 										}
 
 
