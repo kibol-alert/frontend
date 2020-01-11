@@ -1,4 +1,6 @@
 import React from 'react';
+import { parseJwt } from '../_helpers/parseJWT';
+import api from '../_helpers/api'
 
 import { connect } from 'react-redux';
 import MainMap from '../_components/MainMap';
@@ -16,15 +18,45 @@ class HomePage extends React.Component {
                 longitude: 19,
                 zoom: 7
             },
+            user: {
+                userName: "",
+                isAdmin: false,
+                club: {
+                    name: "",
+                    logoUri: ""
+                }
+            },
+            clubs: [],
+            brawls: [],
             isTracked: false
         };
     }
     componentDidMount() {
+        this.getUser();
+        this.getClubs();
+        this.getBrawls();
         this.findCoordinates();
     }
 
     handleDeleteUser(id) {
         return (e) => this.props.deleteUser(id);
+    }
+
+    async getUser() {
+        const id = parseJwt(localStorage.getItem('user')).unique_name;
+        const result = await api.get('user/getUser?id=' + id);
+        if (result.data.result.success === true)
+            this.setState({ user: result.data.result.payload });
+    }
+
+    async getClubs() {
+        let result = await api.get('Club/GetClubs?skip=0&take=100');
+        this.setState({ clubs: result.data.result.payload })
+    }
+
+    async getBrawls() {
+        let result = await api.get('Brawl/GetBrawls?skip=0&take=100');
+        this.setState({ brawls: result.data.result.payload })
     }
 
     findCoordinates = () => {
@@ -35,18 +67,17 @@ class HomePage extends React.Component {
                 this.setState({ location, isTracked });
             }
         );
-
     };
 
     render() {
         var styles = {
-            height: '90vh',
             width: '100vw'
         }
+        const { user, clubs, brawls, isTracked } = this.state;
         return (
             <div id="test" style={styles} >
-                <SideBar right pageWrapId={"test"} outerContainerId={"app"} />
-                <MainMap isTracked={this.state.isTracked} location={this.state.location}></MainMap>
+                <SideBar right user={user} pageWrapId={"test"} outerContainerId={"app"} />
+                <MainMap clubs={clubs} user={user} brawls={brawls} isTracked={isTracked} location={this.state.location}></MainMap>
             </div >
         );
     }

@@ -4,31 +4,54 @@ import { Link } from 'react-router-dom';
 import MyProfileModal from '../SideBarModals/MyProfileModal';
 import MyClubModal from '../SideBarModals/MyClubModal';
 import ClubsModal from '../SideBarModals/ClubsModal';
-import StatsModal from '../SideBarModals/StatsModal';
+import LogsModal from '../SideBarModals/LogsModal';
+import UsersModal from '../SideBarModals/UsersModal';
+import BrawlsModal from '../SideBarModals/BrawlsModal';
 import Button from '@material-ui/core/Button';
+
 export default props => {
+	const { user } = props;
+
 	return (
-		// Pass on our props
 		<Menu {...props}>
-			<a className="menu-item" href="/">
-				Home
-		</a>
+
+			<div style={{
+				'display': 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'
+			}}>
+				<img src={user.club.logoUri} alt="club_logo"></img>
+				<h3>{user.club.name}</h3>
+				<h1>
+					{user.userName}
+				</h1>
+			</div>
 
 			<a className="menu-item" >
-				<MyProfileModal />
+				<MyProfileModal user={user} />
 			</a>
 
 			<a className="menu-item" >
-				<MyClubModal />
+				<MyClubModal club={user.club} user={user} />
 			</a>
 			<a className="menu-item" >
-				<StatsModal />
+				<ClubsModal user={user} />
 			</a>
 			<a className="menu-item" >
-				<ClubsModal />
+				<BrawlsModal user={user} />
 			</a>
+			{user.isAdmin === true &&
 
-			<Link to="/login"> <Button variant="contained" color="primary">Wyloguj się</Button></Link>
-		</Menu>
+				<a className="menu-item" >
+					<LogsModal />
+				</a>
+
+			}
+			{user.isAdmin === true &&
+				<a className="menu-item" >
+					<UsersModal />
+				</a>}
+
+			<Link to="/login"> <Button fullWidth={true} variant="contained" color="primary">Wyloguj się</Button></Link>
+
+		</Menu >
 	);
 };

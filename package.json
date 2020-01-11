@@ -18,8 +18,11 @@
   "dependencies": {
     "@material-ui/core": "^4.7.1",
     "@material-ui/icons": "^4.5.1",
+    "@material-ui/pickers": "^3.2.8",
     "@material-ui/styles": "^4.7.1",
     "axios": "^0.19.0",
+    "bad-words": "^3.0.3",
+    "cheap-ruler": "^2.5.1",
     "history": "^4.10.1",
     "leaflet": "^1.6.0",
     "material-table": "^1.54.2",
@@ -36,6 +39,7 @@
     "react-validation": "^3.0.7",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
+    "styled-components": "^4.4.1",
     "styles-loader": "^1.0.2"
   },
   "devDependencies": {
