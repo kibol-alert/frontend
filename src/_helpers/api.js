@@ -1,20 +1,17 @@
 import axios from 'axios';
 
-function authHeader() {
-	let user = JSON.parse(localStorage.getItem('user'));
 
-	if (user && user.token) {
-		return user.token;
-	} else {
-		return null;
-	}
-}
-
-export default axios.create({
+const instance = axios.create({
 	baseURL: `https://kibol-alert-api.azurewebsites.net/api/`,
 	// baseURL: `http://localhost:59547/api/`,
-	responseType: "json",
-	headers: {
-		'Authorization': `Bearer ${authHeader()}`
-	}
+	responseType: "json"
 });
+
+instance.interceptors.request.use((config) => {
+	const token = JSON.parse(localStorage.getItem('user'));
+	if (token !== null)
+		config.headers.Authorization = `Bearer ${token}`;
+	return config;
+})
+
+export default instance;
