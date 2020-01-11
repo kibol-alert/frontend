@@ -69,7 +69,6 @@ export default props => {
 						title="Kluby"
 						data={clubs}
 						detailPanel={rowData => {
-							console.log(rowData)
 							return (<ClubsModalExtension club={rowData} user={user}></ClubsModalExtension>)
 						}}
 						editable={user.isAdmin ? {
@@ -83,7 +82,6 @@ export default props => {
 											if (result) {
 												setClubs(prevState => {
 													const refreshedData = prevState.map(item => {
-														console.log(item.id, newData.id)
 														if (item.id === newData.id) {
 															item = newData
 														}

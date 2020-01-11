@@ -35,12 +35,10 @@ export default props => {
 	};
 
 	const getBrawls = async () => {
-		console.log('fetched')
 		let result = await api.get('Brawl/GetBrawls?skip=0&take=100');
 		setBrawls(result.data.result.payload);
 	}
 	const refreshBrawls = useCallback(async (e) => {
-		console.log(e);
 		await getBrawls()
 	}, [])
 
@@ -83,7 +81,6 @@ export default props => {
 											if (result) {
 												setBrawls(prevState => {
 													const refreshedData = prevState.map(item => {
-														console.log(item.id, newData.id)
 														if (item.id === newData.id) {
 															item = newData
 														}

@@ -73,7 +73,6 @@ export default ({ club, user, refreshBrawl }) => {
 				toast.error("Coś poszło nie tak, upewnij się, że dane są prawidłowe")
 			})
 			if (result) {
-				console.log(result);
 				toast.success("Ustawke dodano pomyślnie")
 				await refreshBrawl('refreshed');
 				handleClose();

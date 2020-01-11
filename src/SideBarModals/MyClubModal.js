@@ -18,6 +18,7 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChantForm from './Forms/ChantForm';
 import badWords from './badwords'
+import axios from 'axios'
 
 
 const useStyles = makeStyles(theme => ({
@@ -37,10 +38,9 @@ const useStyles = makeStyles(theme => ({
 
 export default props => {
   const club = props.club;
-  const user = props.user;
   const [open, setOpen] = React.useState(false);
   const [myClub, setClub] = React.useState({ chants: [] });
-  const [clubStats, setClubStats] = React.useState(null);
+  const [matches, setMatches] = React.useState([])
 
   const [state, setState] = React.useState({
     relationColumns: [
@@ -66,7 +66,22 @@ export default props => {
   };
 
   const getClubStats = async () => {
-    // const result = await axios.get('http://livescore-api.com/api-client/leagues/table.json?key=MbwgnQV36wUjNtfm&secret=1rbuqob8EksnPzNCKjS7aOahk5A8zQuB&league=19')
+    var today = new Date();
+    let leagueId = 381;
+    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    if (club.league === "Ekstraklasa")
+      leagueId = 381;
+    else if (club.league === "I Liga")
+      leagueId = 382
+    else if (club.league === "II Liga")
+      leagueId = 383
+
+    const result = await axios.get("https://allsportsapi.com/api/football/?met=Fixtures&leagueId=" + leagueId + "&APIkey=30c686bba864c7767b109a864b38e417e6ac0b36c599fab44342edcbbf27a801&from=2019-10-01&to=" + date)
+    const test = result.data.result.filter(item => {
+      if (item.event_away_team === club.name || item.event_home_team === club.name)
+        return item
+    })
+    setMatches(test);
   }
 
   const handleClose = () => {
@@ -111,6 +126,12 @@ export default props => {
                 <h5>Liga: {myClub.league}</h5>
                 <h5>Miasto: {myClub.city}</h5>
                 <h5>Liczba fanów(aplikacji): {myClub.fans ? myClub.fans.length : 0}</h5>
+                <h4>Ostatnie mecze:</h4>
+                {
+                  matches.map((item, i) => {
+                    return <p key={i}>{item.event_date}: {item.event_away_team} vs {item.event_home_team} ({item.event_final_result})</p>
+                  })
+                }
               </div>
             </Grid>
             <Grid item sm={6} md={6}>

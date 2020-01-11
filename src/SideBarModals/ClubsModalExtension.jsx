@@ -1,23 +1,13 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
 import MaterialTable from 'material-table';
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import api from '../_helpers/api'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
-import DeleteIcon from '@material-ui/icons/Delete';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChantForm from './Forms/ChantForm';
 import badWords from './badwords'
@@ -40,7 +30,6 @@ const useStyles = makeStyles(theme => ({
 
 export default props => {
 	const club = props.club;
-	const user = props.user;
 	// const [clubStats, setClubStats] = React.useState(null);
 
 	const [state, setState] = React.useState({
@@ -59,10 +48,6 @@ export default props => {
 	const handleChange = panel => (event, isExpanded) => {
 		setExpanded(isExpanded ? panel : false);
 	};
-
-	const getClubStats = async () => {
-		// const result = await axios.get('http://livescore-api.com/api-client/leagues/table.json?key=MbwgnQV36wUjNtfm&secret=1rbuqob8EksnPzNCKjS7aOahk5A8zQuB&league=19')
-	}
 
 	var Filter = require('bad-words');
 	const censored = new Filter();
