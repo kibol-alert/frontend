@@ -5,6 +5,7 @@ import MyProfileModal from '../SideBarModals/MyProfileModal';
 import MyClubModal from '../SideBarModals/MyClubModal';
 import ClubsModal from '../SideBarModals/ClubsModal';
 import LogsModal from '../SideBarModals/LogsModal';
+import UsersModal from '../SideBarModals/UsersModal';
 import BrawlsModal from '../SideBarModals/BrawlsModal';
 import Button from '@material-ui/core/Button';
 
@@ -38,10 +39,16 @@ export default props => {
 				<BrawlsModal user={user} />
 			</a>
 			{user.isAdmin === true &&
+
 				<a className="menu-item" >
 					<LogsModal />
 				</a>
+
 			}
+			{user.isAdmin === true &&
+				<a className="menu-item" >
+					<UsersModal />
+				</a>}
 
 			<Link to="/login"> <Button fullWidth={true} variant="contained" color="primary">Wyloguj się</Button></Link>
 

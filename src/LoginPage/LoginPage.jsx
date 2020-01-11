@@ -14,8 +14,6 @@ import icon from '../assets/logo-back.png'
 import Image from '../_components/Image'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
-
-
 class LoginPage extends React.Component {
     constructor(props) {
         super(props);
@@ -67,76 +65,78 @@ class LoginPage extends React.Component {
             <Grid container component="main" style={mainDiv}>
                 <CssBaseline />
                 <Grid item sm={12} md={12} className={classes.image} style={loginDiv}>
-
-                    <Grid item xs={12} sm={8} md={4} component={Paper} elevation={6} square >
-                        <div className={classes.paper}>
-                            <Image style={imgStyle} icon={icon} />
-                            <Typography component="h1" variant="h5">
-                                Zaloguj się
-                        </Typography>
-                            <ValidatorForm ref="form" onSubmit={this.handleSubmit} className={classes.form}>
-                                <TextValidator
-                                    variant="outlined"
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    id="username"
-                                    label="Ksywa"
-                                    name="username"
-                                    value={username}
-                                    onChange={this.handleChange}
-                                    validators={['required']}
-                                    errorMessages={['To pole jest wymagane']}
-                                    autoComplete="username"
-                                    autoFocus
-                                />
-                                <TextValidator
-                                    variant="outlined"
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    name="password"
-                                    value={password}
-                                    onChange={this.handleChange}
-                                    label="Hasło"
-                                    validators={['required']}
-                                    errorMessages={['To pole jest wymagane']}
-                                    type="password"
-                                    id="password"
-                                    autoComplete="current-password"
-                                />
-
-                                <Button
-                                    type="submit"
-                                    fullWidth
-                                    variant="contained"
-                                    color="primary"
-                                    className={classes.submit}
-                                >
+                    <Grid item xs={12} sm={10} md={8} component={Paper} elevation={6} square >
+                        <Grid>
+                            <div>drsssssssssssssssssssssssssssssssssssssssssssssssssgfdfdg</div>
+                            <div className={classes.paper}>
+                                <Image style={imgStyle} icon={icon} />
+                                <Typography component="h1" variant="h5">
                                     Zaloguj się
+                        </Typography>
+                                <ValidatorForm ref="form" onSubmit={this.handleSubmit} className={classes.form}>
+                                    <TextValidator
+                                        variant="outlined"
+                                        margin="normal"
+                                        required
+                                        fullWidth
+                                        id="username"
+                                        label="Ksywa"
+                                        name="username"
+                                        value={username}
+                                        onChange={this.handleChange}
+                                        validators={['required']}
+                                        errorMessages={['To pole jest wymagane']}
+                                        autoComplete="username"
+                                        autoFocus
+                                    />
+                                    <TextValidator
+                                        variant="outlined"
+                                        margin="normal"
+                                        required
+                                        fullWidth
+                                        name="password"
+                                        value={password}
+                                        onChange={this.handleChange}
+                                        label="Hasło"
+                                        validators={['required']}
+                                        errorMessages={['To pole jest wymagane']}
+                                        type="password"
+                                        id="password"
+                                        autoComplete="current-password"
+                                    />
+
+                                    <Button
+                                        type="submit"
+                                        fullWidth
+                                        variant="contained"
+                                        color="primary"
+                                        className={classes.submit}
+                                    >
+                                        Zaloguj się
                                 </Button>
-                                <Grid container>
-                                    <Grid item xs>
+                                    <Grid container>
+                                        <Grid item xs>
 
-                                    </Grid>
-                                    <Grid item>
-                                        <Button
-                                            component={Link}
-                                            fullWidth
-                                            variant="contained"
-                                            color="primary"
-                                            to="/register"
-                                            className={classes.submit}
-                                        >
-                                            Zarejestruj
+                                        </Grid>
+                                        <Grid item>
+                                            <Button
+                                                component={Link}
+                                                fullWidth
+                                                variant="contained"
+                                                color="primary"
+                                                to="/register"
+                                                className={classes.submit}
+                                            >
+                                                Zarejestruj
                                         </Button>
+                                        </Grid>
                                     </Grid>
-                                </Grid>
-                                <Box mt={5}>
+                                    <Box mt={5}>
 
-                                </Box>
-                            </ValidatorForm>
-                        </div>
+                                    </Box>
+                                </ValidatorForm>
+                            </div>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Grid >

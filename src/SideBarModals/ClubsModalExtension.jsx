@@ -3,6 +3,8 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
@@ -15,6 +17,7 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
+import DeleteIcon from '@material-ui/icons/Delete';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChantForm from './Forms/ChantForm';
 import badWords from './badwords'
@@ -105,7 +108,7 @@ export default props => {
 								aria-controls="panel1bh-content"
 								id="panel1bh-header"
 							>
-								<Typography className={classes.heading}>{chant.id}</Typography>
+
 								<Typography className={classes.secondaryHeading}>{`${chant.lyrics.substring(0, 15)}...`}</Typography>
 							</ExpansionPanelSummary>
 							<ExpansionPanelDetails>

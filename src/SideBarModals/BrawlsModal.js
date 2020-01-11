@@ -66,9 +66,9 @@ export default props => {
 					</IconButton>
 				</DialogTitle>
 				<DialogContent>
-					{user.isAdmin === true &&
-						<BrawlForm club={user.club} user={user} refreshBrawl={(e) => refreshBrawls(e)}></BrawlForm>
-					}
+
+					<BrawlForm club={user.club} user={user} refreshBrawl={(e) => refreshBrawls(e)}></BrawlForm>
+
 					<MaterialTable
 						title="Ustawki"
 						columns={state.columns}
@@ -106,6 +106,7 @@ export default props => {
 												toast.error('Nie udało się usunąć, spróbuj ponownie później')
 											})
 										if (result) {
+											toast.success('Udało się usunąć wpis')
 											getBrawls();
 										}
 

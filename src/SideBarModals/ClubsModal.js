@@ -11,12 +11,12 @@ import MaterialTable from 'material-table';
 import ClubRelationForm from './Forms/ClubRelationForm'
 import ClubsModalExtension from './ClubsModalExtension'
 import api from '../_helpers/api'
+import { toast } from 'react-toastify';
 
 export default props => {
 	const [open, setOpen] = React.useState(false);
 	const [state, setState] = React.useState({
 		columns: [
-			{ title: 'Id', field: 'id' },
 			{ title: 'Nazwa', field: 'name' },
 			{ title: 'Miasto', field: 'city' },
 			{ title: 'Liga', field: 'league' },
@@ -24,7 +24,7 @@ export default props => {
 		],
 	});
 	const theme = useTheme();
-	const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+	const fullScreen = useMediaQuery(theme.breakpoints.down('lg'));
 
 	const [clubs, setClubs] = useState([]);
 	const { user } = props;
@@ -66,48 +66,51 @@ export default props => {
 				<DialogContent>
 					<MaterialTable
 						columns={state.columns}
+						title="Kluby"
 						data={clubs}
 						detailPanel={rowData => {
 							console.log(rowData)
 							return (<ClubsModalExtension club={rowData} user={user}></ClubsModalExtension>)
 						}}
-						editable={{
-							onRowAdd: newData =>
-								new Promise(resolve => {
-									setTimeout(() => {
-										resolve();
-										setState(prevState => {
-											const data = [...prevState.data];
-											data.push(newData);
-											return { ...prevState, data };
-										});
-									}, 600);
-								}),
+						editable={user.isAdmin ? {
 							onRowUpdate: (newData, oldData) =>
 								new Promise(resolve => {
-									setTimeout(() => {
+									setTimeout(async () => {
 										resolve();
 										if (oldData) {
-											setState(prevState => {
-												const data = [...prevState.data];
-												data[data.indexOf(oldData)] = newData;
-												return { ...prevState, data };
-											});
+											const result = await api.post('club/editclub?id=' + oldData.id, newData)
+												.catch(error => toast.error('Nie udało się zaktualizować, spróbuj ponownie później'))
+											if (result) {
+												setClubs(prevState => {
+													const refreshedData = prevState.map(item => {
+														console.log(item.id, newData.id)
+														if (item.id === newData.id) {
+															item = newData
+														}
+														return item;
+													})
+													toast.success('Udało się zaktualizować klub')
+													return refreshedData;
+												});
+											}
 										}
 									}, 600);
 								}),
 							onRowDelete: oldData =>
 								new Promise(resolve => {
-									setTimeout(() => {
+									setTimeout(async () => {
 										resolve();
-										setState(prevState => {
-											const data = [...prevState.data];
-											data.splice(data.indexOf(oldData), 1);
-											return { ...prevState, data };
-										});
+										const result = await api.post('brawl/deletebrawl?id=' + oldData.id)
+											.catch(error => {
+												toast.error('Nie udało się usunąć, spróbuj ponownie później')
+											})
+										if (result) {
+											toast.success('Udało się usunąć wpis')
+											getClubs();
+										}
 									}, 600);
 								}),
-						}}
+						} : { test: null }}
 					/>
 				</DialogContent>
 			</Dialog>
