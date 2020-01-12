@@ -29,6 +29,11 @@ const ClubArea = ({ club, markerPosition, userClub, isDanger }) => {
 		const relationType = club.clubRelations.find(item => { return item.clubId === userClub.id })
 		let color = "#bbbbbb"
 		let status = "Możesz śmiało tu przyjść"
+
+		if (club.id === userClub.id) {
+			color = "#228b22";
+			status = "To twój teren"
+		}
 		if (relationType) {
 			if (relationType.relation === 1) {
 				color = "#d80000";
