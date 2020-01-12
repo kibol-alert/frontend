@@ -51,6 +51,7 @@ class LoginPage extends React.Component {
             maxWidht: '400px',
             display: 'flex',
             alignItems: 'center',
+            flexWrap: 'wrap',
             justifyContent: 'center'
         }
         var mainDiv = {
@@ -61,13 +62,19 @@ class LoginPage extends React.Component {
             width: '100%',
 
         }
+        var info = {
+            display: 'flex',
+            color: 'white',
+            alignItems: 'start',
+            justifyContent: 'space-between',
+            marginLeft: '100px'
+        }
         return (
             <Grid container component="main" style={mainDiv}>
                 <CssBaseline />
                 <Grid item sm={12} md={12} className={classes.image} style={loginDiv}>
-                    <Grid item xs={12} sm={10} md={8} component={Paper} elevation={6} square >
+                    <Grid item xs={12} sm={8} md={4} component={Paper} elevation={6} square id="login">
                         <Grid>
-                            <div>drsssssssssssssssssssssssssssssssssssssssssssssssssgfdfdg</div>
                             <div className={classes.paper}>
                                 <Image style={imgStyle} icon={icon} />
                                 <Typography component="h1" variant="h5">
@@ -135,6 +142,27 @@ class LoginPage extends React.Component {
 
                                     </Box>
                                 </ValidatorForm>
+                            </div>
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={12} sm={8} md={4} elevation={6} square >
+                        <Grid>
+                            <div className={classes.paper} style={info}>
+                                <Typography component="h1" variant="h2">
+                                    Co można dzięki aplikacji Kosa Czy Sztama?
+                                </Typography>
+                                <Typography component="li" variant="h6">
+                                    Sprawdzić teretorium klubu
+                                </Typography>
+                                <Typography component="li" variant="h6">
+                                    Wybrać swój ulubiony klub i uczestniczyć w jego życiu
+                                </Typography>
+                                <Typography component="li" variant="h6">
+                                    Sprawdzać i dodawać nowe przyśpiewki klubowe
+                                </Typography>
+                                <Typography component="li" variant="h6">
+                                    Tworzyć i przeglądać ustawki
+                                </Typography>
                             </div>
                         </Grid>
                     </Grid>
