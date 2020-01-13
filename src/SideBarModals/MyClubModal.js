@@ -78,7 +78,7 @@ export default props => {
 
     const result = await axios.get("https://allsportsapi.com/api/football/?met=Fixtures&leagueId=" + leagueId + "&APIkey=30c686bba864c7767b109a864b38e417e6ac0b36c599fab44342edcbbf27a801&from=2019-10-01&to=" + date)
     const test = result.data.result.filter(item => {
-      if (item.event_away_team === club.name || item.event_home_team === club.name)
+      if (club.name.includes(item.event_away_team) || club.name.includes(item.event_home_team))
         return item
     })
     setMatches(test);

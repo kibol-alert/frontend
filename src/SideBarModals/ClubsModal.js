@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -38,6 +38,9 @@ export default props => {
 		let result = await api.get('Club/GetClubs?skip=0&take=100');
 		setClubs(result.data.result.payload);
 	}
+	const refreshClubs = useCallback(async (e) => {
+		await getClubs()
+	}, [])
 
 	const handleClose = () => {
 		setOpen(false);
@@ -69,7 +72,7 @@ export default props => {
 						title="Kluby"
 						data={clubs}
 						detailPanel={rowData => {
-							return (<ClubsModalExtension club={rowData} user={user}></ClubsModalExtension>)
+							return (<ClubsModalExtension club={rowData} user={user} refreshClubs={(e) => refreshClubs(e)}></ClubsModalExtension>)
 						}}
 						editable={user.isAdmin ? {
 							onRowUpdate: (newData, oldData) =>
