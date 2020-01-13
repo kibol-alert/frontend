@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
@@ -30,6 +30,10 @@ const useStyles = makeStyles(theme => ({
 
 export default props => {
 	const club = props.club;
+	const refresh = props.refreshClubs;
+	const refreshClubs = useCallback(async (e) => {
+		await refresh(e)
+	}, [])
 	// const [clubStats, setClubStats] = React.useState(null);
 
 	const [state, setState] = React.useState({
@@ -55,7 +59,7 @@ export default props => {
 
 	return (
 		<div style={{ margin: '10px', padding: '10px', border: '2px solid #3f51b5' }}>
-			<ChantForm club={club}></ChantForm>
+			<ChantForm refreshClub={(e) => refreshClubs(e)} club={club}></ChantForm>
 			<Grid container component="main">
 				<CssBaseline />
 				<Grid item sm={6} md={6}>

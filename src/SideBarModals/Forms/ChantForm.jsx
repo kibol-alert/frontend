@@ -16,7 +16,7 @@ import axios from 'axios'
 export default props => {
 	const [open, setOpen] = useState(false);
 	const [lyrics, setLyrics] = useState("");
-	const { club } = props
+	const { club, refreshClub } = props
 
 	const theme = useTheme();
 	const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -41,8 +41,10 @@ export default props => {
 		}).catch(error => {
 			toast.error("Coś poszło nie tak, upewnij się, że dane są prawidłowe")
 		})
-		if (result)
+		if (result) {
 			toast.success("Przyśpiewke dodano pomyślnie")
+			refreshClub('refreshed');
+		}
 	}
 
 	return (
