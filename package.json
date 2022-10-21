@@ -23,7 +23,7 @@
 		"@material-ui/icons": "^4.11.2",
 		"@material-ui/pickers": "^3.3.10",
 		"@material-ui/styles": "^4.11.4",
-		"axios": "^0.19.2",
+		"axios": "^0.21.2",
 		"bad-words": "^3.0.4",
 		"cheap-ruler": "^2.5.1",
 		"history": "^4.10.1",
